@@ -1,0 +1,21 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/ubuntu
+{
+	"name": "Trace Coordinator Thesis",
+	"dockerFile": "Dockerfile",
+	// "image": "mcr.microsoft.com/devcontainers/base:jammy",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"julialang.language-julia",
+				"ms-azuretools.vscode-docker",
+				"mhutchie.git-graph",
+				"ms-toolsai.jupyter",
+				"james-yu.latex-workshop"
+			],
+		}
+	},
+	"mounts": [
+		"source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind",
+	],
+}
