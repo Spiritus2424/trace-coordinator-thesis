@@ -12,3 +12,5 @@
 *.fls
 *.synctex.gz
 *.toc.bak
+
+!literature_review/**
