@@ -18,5 +18,9 @@
         "**/*.fdb_latexmk": true,
         "**/*.fls": true,
         "**/*.synctex.gz": true
-    }
+    },
+    "cSpell.words": [
+        "tracepoint",
+        "tracepoints"
+    ]
 }

@@ -4,14 +4,27 @@
 
 \section{Related Work}
 
+The related work is divided into six sections. The ﬁrst section will report recent works on Tracing Analysis. The second section will report recent works on integrated development environment. The third section will present different distributed artchitecture that application use for scaling. The fourth section will present recent works on distributed analysis. The fifth section will prensent recent works on dsitributed critical path. The sixth section will present recent works on Theia.
+
+
 \subsection{Tracing Analysis}
 
+ Tracing involves a specialized use of logging that records runtime events about a program's execution. 
+ Tracing is used to detect and identify performance issues, behavior issues and security issues (FIND SOURCE HERE). Tracing can be done on several levels including user-space, kernel, hardware, hypervisor, network, etc. Software that capture those events is called a tracer. To capture those events, tracepoints must be inserted either statically or dynamically. In the case that the tracepoint is inserted statically, the code must be modified to include tracing macros and must be recompiled. In the case that the tracepoint is inserted dynamically, tracepoints are added dynamically to a compiled and running program (Gregg and Mauro, 2011). During the execution of the program, events will be emitted and a tracer will capture them. At this point, a tracer will produce a trace file, organized in a specific format. Because the tracer have to run at the same time of the main application, it will impact the execution time of the main application. This is why a tracer must have a minimal execution overhead. When the tracer finish to produce a trace file, we can apply a trace analysis.
+
+ A trace analysis transforms the trace events into a dataset to perform more investigation and it reorganizes them into data structure for faster access (Prieur-Drevon et al., 2018).
+
 \subsection{Integrated Development Environment}
+
+Integration Development Environment (IDE) is essential for developer. 
+% Microsoft’s language server protocol (LSP) is a communication protocol, based on JSON-RPC, between a client, which is the IDE, and a server that oﬀers language support (Keidel et al., 2016). At this time, the LSP does not specify how the messages exchanged should be transferred and the client is responsible for managing the server’s lifetime. The protocol provides common features such as code completion, code error, syntax highlighting and go-to deﬁnition. Many organizations such as the Eclipse Foundation, Github, and JetBrains are adapting their popular IDE (Eclipse, Atom, IntelliJ) to implement the LSP. Keidel et al. have presented Monto (Keidel et al., 2016) which follows the same idea as the LSP, but their approach allows the language server to be stateless. Services are responsible for providing the common language features, and those services may also be composed of smaller services. Moreover, in comparison to the LSP, their solution doesn't have to maintain and update a copy of the source code. Marr et al. have presented the Kómpos protocol (Marr et al., 2017) which is a concurrency-agnostic debugger protocol. Its goal is to decouple the debugger from the concurrency models such as threads, locks, communication event loops, and others. The protocol provides support for common features such as breakpoints, step-by-step and visualization of the interaction of concurrent models. In comparison to existing debugger protocol such as Java Debug Wire Protocol or the GDB machine interface, their solution is not speciﬁc to a concurrency concept. Eﬀtinge and Kosyakov have presented Theia (Eﬀtinge and Kosyakov, 2017), a new open-source IDE framework for building IDEs that could run both as a desktop application or in a web browser connected to a remote backend. The project shares a lot of similarities with Microsoft's code editor, Visual Studio Code. Theia uses Node.js, Electron and implements the LSP
+
 
 \subsection{Scaling Distributed Architecture}
 
 \subsection{Distributed Analysis}
 
+% Indeed, trace ﬁles could easily contain millions, even billions of events and the analysis must use an efficient data structure to maintain query performance
 \subsection{Distributed Critical Path}
 
 \subsection{Theia}
