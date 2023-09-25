@@ -48,3 +48,78 @@ Résumé: Comparer l'avantage du Language Server Protocol (LSP) et du Domain Spe
 Lien: https://www.engineeringvillage.com/app/doc/?docid=cpx_Mbaee6421593c48ae91M4e9c10178163171
 
 Résumé: Cette article présente une architecture qui met de l'avant le découplage entre les languages de programmation et les IDEs. Résultats concluant avec un temps de réponse très acceptable même avec le overhead.
+
+## Article 9: A Concurrency-Agnostic Protocol for Multi-Paradigm Concurrent Debugging Tools
+
+Lien: https://www.engineeringvillage.com/app/doc/?docid=cpx_M20b2080d161b3998b4dM67d81017816339
+
+Résumé: This paper proposes a concurrency-agnostic debugger protocol that decouples the debugger from the concurrency models employed by the target application. As a result, the underlying language runtime can define custom breakpoints, stepping operations, and execution events for each concurrency model it supports, and a debugger can expose them without having to be specifically adapted.
+
+## Article 10: Protocol-Based Interactive Debugging for Domain-Specific Languages
+
+Lien: https://hal.science/hal-04124727/
+
+Résumé: L'article propose une architecture pour:
+- offrir un deboguage interactive peu importe le DSL, sans prendre en compte le domaine de DSL et comment le DSL runtime est implémenté.
+- Connaitre l'effort pour prendre un DSL existant et l'adapter au protocol
+- Savoir si l'approche peut definir et utiliser des domain-specific existant
+- Savoir si l'approche permet être intégré avec un effor minimal avec des IDEs qui implémente DAP
+
+## Article 11: Scalable, Distributed AI Frameworks: Leveraging Cloud Computing for Enhanced Deep Learning Performance and Efficiency
+
+Lien: https://arxiv.org/pdf/2304.13738.pdf
+
+Résumé: Présente différent framework et architecture distribué pour le AI. Des benchmarks et des problèmes etc
+
+
+## Article 12: Toward Sustainable HPC: Carbon Footprint Estimation and Environmental Implications of HPC Systems
+
+Lien: https://arxiv.org/pdf/2306.13177.pdf
+
+Résumé: Évalue l'empreinte carbone des systèmes HPC (en production et en stage de développement).
+
+
+## Article 13: Analyzing Resource Utilization in an HPC System: A Case Study of NERSC’s Perlmutter
+
+Lien: https://link.springer.com/chapter/10.1007/978-3-031-32041-5_16
+
+Résumé: Prends connaissance des ressources consommer des noeuds dans un système HPC. Après un mois d'utilisation, il remarque que les CPUs et les GPUs ne sont pas totalement utilisé. Surtout pour les lots de travail qui implique des GPUs.
+
+
+## Article 14: Distributed Cloud Monitoring Using Docker as Next Generation Container Virtualization Technology
+
+Lien: https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7443771
+
+Résumé: Explique l'avantage d'utiliser des conteneurs au lieu de VM dans les systèmes
+
+
+## Article 15: Implementation of ATLAS Distributed Computing monitoring dashboards using InfluxDB and Grafana
+
+Lien: https://www.epj-conferences.org/articles/epjconf/pdf/2020/21/epjconf_chep2020_03031.pdf
+
+Résumé:
+
+## Article 16: Towards a Framework for Monitoring and Analyzing High Performance Computing Environments Using Kubernetes and Prometheus
+
+Lien: https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9060302
+
+Résumé: L'infrastructure proposé assitera dans l'orchestration et déploiement des services, à automatiser des téléversement de données d'analyses, corréler multiple données provenant de différent source et mettre des limites pour des aleters pour des problèmes principales.  
+<!-- English version -->
+This comprehensive infrastructure will assist in
+centrally orchestrating services and deployments, automatically
+analyzing streaming data, correlating multiple-sourced data,
+and thresholding alerts to identify core issues from a single
+view. The comprehensive framework proposed in this paper
+provides orchestration and management of the complex deployments of cluster and services by using Kubernetes platform and provides easy monitoring of Kubernetes nodes and
+services via Prometheus operators. Moreover, the framework
+also enables the real-time monitoring and visualizations by
+utilizing Grafana tools.
+
+## Article 17: Big data analytics on Apache Spark
+
+Lien: https://link.springer.com/article/10.1007/s41060-016-0027-9
+
+Résumé: Présente les composantes principales de spark ainsi de l'architecture pour comment spark fait pour analyser du big data  
+
+
+

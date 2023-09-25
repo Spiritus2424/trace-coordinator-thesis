@@ -20,6 +20,10 @@
         "**/*.synctex.gz": true
     },
     "cSpell.words": [
+        "JDWP",
+        "Kómpos",
+        "Marr",
+        "Theia",
         "tracepoint",
         "tracepoints"
     ]
