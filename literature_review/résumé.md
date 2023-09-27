@@ -122,4 +122,26 @@ Lien: https://link.springer.com/article/10.1007/s41060-016-0027-9
 Résumé: Présente les composantes principales de spark ainsi de l'architecture pour comment spark fait pour analyser du big data  
 
 
+## Article 18: ANALYSE DÉTAILLÉE DE TRACE EN DÉPIT D'ÉVÉNEMENTS MANQUANTS
 
+Lien: https://publications.polymtl.ca/3248/
+
+Résumé: Étudier le problème des événements perdus dans une trace lors de son analyse, et d’apporter des solutions permettant d’indiquer les incohérences et d’y remédier. Pour cela, nous avons utilisé des machines à états finis, puisque ce formalisme de représentation permet de modéliser le système étudié, en définissant la façon dont les événements génèrent des changements d’états. Le tout implémenter dans Tracecompass.
+
+## Article 19: Programming on Parallel Machines
+
+Lien: https://web.cs.ucdavis.edu/~matloff/matloff/public_html/158/PLN/ParProcBook.pdf
+
+Résumé: 
+
+## Article 20: Distributed Computation of the Critical Path from Execution Traces
+
+Lien: dans le dossier
+
+Résumé: Propose une nouvelle architecture pour calculer le chemin critique de manière distribuer. Consiste à distribuer les différents calcules et ensuite les aggrégers sur un noeud pour faire les derniers calcules.
+
+## Artcile 21: Trace Visualization with Java Pathfinder using Theia Trace Viewer
+
+Lien: https://www.diva-portal.org/smash/get/diva2:1711513/FULLTEXT01.pdf
+
+Résumé: Migrate Tracecompass Java Pathfinder into Theia Trace Viewer Extension
