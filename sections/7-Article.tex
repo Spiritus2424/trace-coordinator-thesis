@@ -86,7 +86,7 @@ The need to have a protocol that allows the feasibility or potential to construc
 
 [Mettre une figure]
 
-\subsection{}
+% \subsection{}
 % \subsection{Connect logically the traces}
 % \subsubsection{What are the available traces}
 % \subsubsection{Where are the traces}
@@ -102,12 +102,6 @@ When an experiment is created and traces are added to it, if the traces are inde
 
 In certain scenarios, specific analyses may necessitate access to raw data for completing the analysis, such as the critical path analysis. Regrettably, the TSP does not currently provide any endpoints for retrieving this unprocessed data. Consequently, we have proposed a solution to extend the capabilities of the TSP, enabling users to access data that has not undergone processing for the various views and at the same time allow more feature that could be useful for users in the future.
 
-% In the TSP protocol, we can only run analyzes on $experiments$. An $experiment$ is a list that brings together all the traces desired for an analysis. Currently, TSP allows you to display the results of an analysis on 4 different views depending the data provider available in the backend: Table, XY Graph, Time Graph and Data Tree. In all views, except virtual table lines, we have the vertical axis and the horizontal axis. The vertical axis is all the process that are in the trace and it graphically represent by rows. The horizontal axis is the time and it graphically represent by column.
-
-% When we create an experiment and we add traces inside. If the trace are independent, it will only add rows to basic analysis. So the data will extend on the  vertical axis. If the trace are from the same tracing session and we split this session into many parts of trace, like Lttng Log Rotation [Article ?]. At this time the data will extend on the vertical axis and the horizontal axis. 
-
-% In some case, some analysis will have to use some raw data to complete analysis, like the critical path. At this point, the TSP do not offer endpoint to access the raw data. So we proposed an solution to extends the TSP and allow the user to retrieve data that is not processed for the views.
-
 \subsubsection{Aggregation of independent trace (vertically)}
 
 TSP conveniently exposes the analysis results in the form of a view model data. As previously discussed, this approach offers the advantage of enabling the client to directly display the data without the need for additional processing. Consequently, our proposed solution focuses its aggregation efforts on this preformatted result, as opposed to the raw data retrieved when querying the state system, as is the case with Trace Compass.
@@ -118,15 +112,21 @@ This approach works well because we are analyzing traces from different machines
 
 Let us take a use case that, when aggregating data from multiple sources, computes the ratio of each value to the "sum" of data (e.g. percentage of each CPU usage). Because the trace are independent and make a percentage base on the resources of the machine that the trace was collected, we don't need to recalculate the ratio of each value. 
 
-The problem is that each analysis nodes are independent and don't have the notion of what other nodes could produce. Each rows that is display in the view are suppose to have an unique identifier and not an universal unique identifier. So each node analysis when they are generating the data. It is incrementing a counter for each rows that is create that start from 0. Therefore, when the coordinator will aggregates the response from each analysis nodes, it will send back to the client/views many series of data points with the same identifier. To solve this problem, the coordinator will take responsibility to change the identifier of each 
+The problem is that each analysis nodes are independent and don't have the notion of what other nodes could produce. Each rows that is display in the view are suppose to have an unique identifier and not an universal unique identifier. So each node analysis when they are generating the data. It is incrementing a counter for each rows that is create that start from 0. Therefore, when the coordinator will aggregates the response from each analysis nodes, it will send back to the client/views many series of data points with the same identifier. To solve this problem, the coordinator will take responsibility to change the identifier of each rows. At the start, the coordinator will take into account how many analysis node is available and assign a rank between $0 to n-1$. Where $n$ is the number of analysis nodes. Then each query that is made to an analysis node will have it identifier modify grant to a range, which are calculate with this formula 
 
+\hbox{step = INT64\_MAX/n}
+$ range = [step * rank, step * (rank + 1)[$ 
 
 
 [Exemple de requête]
 [Exemple de réponse]
 \subsubsection{Critical Path}
 
+In progress to find a solution
+
 \subsection{Visualization}
+
+
 
 % Talk about TSP reuse of the view and all the view that implemented the TSP protocol
 
