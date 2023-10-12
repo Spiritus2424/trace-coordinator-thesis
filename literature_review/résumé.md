@@ -145,3 +145,9 @@ Résumé: Propose une nouvelle architecture pour calculer le chemin critique de 
 Lien: https://www.diva-portal.org/smash/get/diva2:1711513/FULLTEXT01.pdf
 
 Résumé: Migrate Tracecompass Java Pathfinder into Theia Trace Viewer Extension
+
+## Article 22: Open Tracing Tools: Overview and Critical Comparison
+
+Lien: https://arxiv.org/pdf/2207.06875.pdf
+
+Résumé: Open Tracing Tools: Overview and Critical Comparison

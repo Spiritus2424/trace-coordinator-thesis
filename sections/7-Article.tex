@@ -67,7 +67,25 @@ the LSP.
 Theia Trace Viewer extension is the newly developed server-client application developed by Ericsson and the Eclipse Foundation, along with other contributors. It's purpose is to replace Trace Compass as the Eclipse general-purpose tracing tool. As previously described Trace Viewer uses a server-client architecture, where the client communicates with the server through a protocol called Trace Server Protocol (TSP) [10].
 
 \section{Proposed Solution}
+
+
+\subsection{Motivation \& Background}
+
+Currently, we have several problems related to trace analysis of distributed systems. It is difficult to be able to group all the traces on one machine. If the tracker does not store traces on a machine as Jaeger does, this must be managed by the user. This becomes a problem when we have 1000 and more compute nodes. This adds a workload and sometimes even becomes very limiting. For a small trace of 1GB on each node for 1000 nodes, hard disk space quickly becomes an issue for analyzing distributed system traces.
+
+Trace Compass excels in its ability to support various trace formats, making it a standout framework in this regard. This platform offers a seamless way to incorporate custom front-end parsers and even introduce novel types of analyses. Notably, the separation between the Trace Compass client and server components positions it as a promising option for distributed deployment. While the current Trace Compass server can communicate with a remote client through the Trace Server Protocol, it has limitations. It can only run as a single instance, making it inadequate for handling substantial volumes of trace data in environments like HPC clusters. This limitation becomes apparent when considering the demands on CPU, storage, and RAM memory resources. Additionally, the Trace Compass server presently requires all trace data to be stored locally for analysis, which may not align with certain use cases.
+
+Certainly, running multiple Trace Compass servers, each dedicated to assessing the traces of individual machines within a cluster, is a feasible approach. However, it is crucial to emphasize the importance of having an overarching view of the entire cluster. To make Trace Compass more adept at tracing extensive and diverse systems, a fundamental re-architecture with scalability in mind is imperative. Our aim is to equip Trace Compass with robust query capabilities akin to those found in established platforms, all while preserving its inherent flexibility for the development of novel analysis types and trace formats. Achieving this objective necessitates the implementation of an abstract layer, allowing for the creation of new query operators with minimal effort, while maintaining the overall behavior of the platform. This concept aligns with the notion of the trace parser or the DataProvider layers, which provide an abstraction of the view, irrespective of the specific type of analysis within Trace Compass.
+
+
 \subsection{Overall architecture}
+
+The architecture platform consists of three main parts, the traced nodes, the analysis nodes and the coordinator node. An analysis node serves as the designated location for processing trace data that originates from traced nodes. This configuration enable us to directly deploy the analysis node where the traces are which is more easy that move the traces at the same node. Each individual analysis node is tasked with handling a distinct set of traced nodes. In our particular configuration, we designate each analysis node as a Trace Compass Server. The coordinator node plays a pivotal role when a client or view initiates a query. It, in turn, dispatches queries to the relevant analysis nodes and subsequently combines their responses to furnish an integrated analysis outcome. When a client transmits a request to a server seeking trace analysis data, the predominant portion of the response typically comprises data points, frequently presented in the form of a time series array.
+
+The need to have a protocol that allows the feasibility or potential to construct complex operations is not necessary in our situation. The reason is because the flexibility of having complex operations is already included in the flexibility of creating analyzes in the Trace Compass architecture. Therefore, we opted for the Trace Server Protocol (TSP) as the communication protocol for both trace data and analysis requests. Several factors guided this decision. Firstly, TSP already possesses the functionality to filter data points based on timestamp parameters, and it can be readily extended to incorporate additional analysis base on current view. Secondly, the Trace Compass server, which we selected for our prototype implementation, already supports this protocol. Thirdly, TSP is designed to break away from existing analytics implementations and focus on displaying data. This allows us to keep the flexibility that Trace Compass has to add or modify analyzes, but also limits the computing power needed on the coordinator, because the coordinator will mainly be aggregating the data together and we want to focus what is compute intensive at analysis node. As a bonus, it help us to easily maintain the coordinator because the aggregation will be base on the views available in the protocol and not the implementation.
+
+[Mettre une figure]
+
 \subsection{}
 % \subsection{Connect logically the traces}
 % \subsubsection{What are the available traces}
@@ -76,11 +94,41 @@ Theia Trace Viewer extension is the newly developed server-client application de
 
 \subsection{Distributed Analysis}
 
+Within the TSP protocol, analysis is restricted to operating on experiments. An experiment is essentially a compilation of all the desired traces required for a particular analysis. Presently, TSP provides four distinct views models for displaying the results of an analysis, depending on the data provider available in the backend: Table, XY Graph, Time Graph, and Data Tree. These models allow the view to directly display data to the user, without prior processing. This makes it possible to avoid resource constraints that certain workstations or applications might have and make the most of the remote resources made available.
+
+In these views, with the exception of virtual table, there are two key axes: the vertical and horizontal axes. The vertical axis represents all the processes within the trace and is visually represent in rows, while the horizontal axis signifies time and is visually displayed in columns.
+
+When an experiment is created and traces are added to it, if the traces are independent, they merely contribute additional rows to the basic analysis, thereby extending the data along the vertical axis. However, if the traces originate from the same tracing session and this session is segmented into multiple trace parts, as exemplified in "Lttng Log Rotation" [Reference], the data can expands both along the vertical and horizontal axes.
+
+In certain scenarios, specific analyses may necessitate access to raw data for completing the analysis, such as the critical path analysis. Regrettably, the TSP does not currently provide any endpoints for retrieving this unprocessed data. Consequently, we have proposed a solution to extend the capabilities of the TSP, enabling users to access data that has not undergone processing for the various views and at the same time allow more feature that could be useful for users in the future.
+
+% In the TSP protocol, we can only run analyzes on $experiments$. An $experiment$ is a list that brings together all the traces desired for an analysis. Currently, TSP allows you to display the results of an analysis on 4 different views depending the data provider available in the backend: Table, XY Graph, Time Graph and Data Tree. In all views, except virtual table lines, we have the vertical axis and the horizontal axis. The vertical axis is all the process that are in the trace and it graphically represent by rows. The horizontal axis is the time and it graphically represent by column.
+
+% When we create an experiment and we add traces inside. If the trace are independent, it will only add rows to basic analysis. So the data will extend on the  vertical axis. If the trace are from the same tracing session and we split this session into many parts of trace, like Lttng Log Rotation [Article ?]. At this time the data will extend on the vertical axis and the horizontal axis. 
+
+% In some case, some analysis will have to use some raw data to complete analysis, like the critical path. At this point, the TSP do not offer endpoint to access the raw data. So we proposed an solution to extends the TSP and allow the user to retrieve data that is not processed for the views.
+
 \subsubsection{Aggregation of independent trace (vertically)}
 
+TSP conveniently exposes the analysis results in the form of a view model data. As previously discussed, this approach offers the advantage of enabling the client to directly display the data without the need for additional processing. Consequently, our proposed solution focuses its aggregation efforts on this preformatted result, as opposed to the raw data retrieved when querying the state system, as is the case with Trace Compass.
+
+Most of the analyses are currently represented as a series of data points over a timeline. Therefore, when requesting an analysis result via TSP, it primarily necessitates providing the timestamps for the analyzed timeline and the requested items for the analyzed process that we want to show [Example query]. Upon receiving requests from the client or view, the coordinator node can efficiently retain the request in its original form, duplicate it, and broadcast it to the other nodes. Subsequently, it aggregates the returned responses in a cohesive manner.
+
+This approach works well because we are analyzing traces from different machines, generated independently but during the same time frame. As a result, the querying time interval remains consistent. In essence, we can liken this process to a Map/Reduce paradigm, with the distributed data processing involving the analysis nodes acting as the workers during the Map phases and the coordinator node overseeing the Reduce phases. Upon receiving a request, the coordinator queries the analysis nodes and then merges all their responses, to produce the final response for the client. 
+
+Let us take a use case that, when aggregating data from multiple sources, computes the ratio of each value to the "sum" of data (e.g. percentage of each CPU usage). Because the trace are independent and make a percentage base on the resources of the machine that the trace was collected, we don't need to recalculate the ratio of each value. 
+
+The problem is that each analysis nodes are independent and don't have the notion of what other nodes could produce. Each rows that is display in the view are suppose to have an unique identifier and not an universal unique identifier. So each node analysis when they are generating the data. It is incrementing a counter for each rows that is create that start from 0. Therefore, when the coordinator will aggregates the response from each analysis nodes, it will send back to the client/views many series of data points with the same identifier. To solve this problem, the coordinator will take responsibility to change the identifier of each 
+
+
+
+[Exemple de requête]
+[Exemple de réponse]
 \subsubsection{Critical Path}
 
 \subsection{Visualization}
+
+% Talk about TSP reuse of the view and all the view that implemented the TSP protocol
 
 \section{Test Environment}
 
