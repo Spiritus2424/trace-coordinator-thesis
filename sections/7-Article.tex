@@ -4,7 +4,7 @@
 
 \section{Related Work}
 
-The related work is divided into six sections. The ﬁrst section will report recent works on Tracing Analysis. The second section will report recent works on integrated development environment. The third section will present different distributed artchitecture that application use for scaling. The fourth section will present recent works on distributed analysis. The fifth section will prensent recent works on dsitributed critical path. The sixth section will present recent works on Theia.
+The related work is divided into six sections. The first section will report recent works on Tracing Analysis. The second section will report recent works on integrated development environment. The third section will present different distributed architecture that application use for scaling. The fourth section will present recent works on distributed analysis. The fifth section will present recent works on distributed critical path. The sixth section will present recent works on Theia.
 
 
 \subsection{Tracing Analysis}
@@ -13,11 +13,7 @@ The related work is divided into six sections. The ﬁrst section will report re
 
  A trace analysis transforms the trace events into a dataset to perform more investigation and it reorganizes them into data structure for faster access (Prieur-Drevon et al., 2018).
 
- \subsection{Integrated Development Environment}
- 
- % IDE evolution: No plugins, Plugins, Server Protocol, Desktop base IDE, Cloud base IDE, Hybrid base IDE
-% Integrated Development Environments (IDEs) have played a pivotal role in shaping the landscape of software development. These powerful software tools have evolved significantly over the years, revolutionizing the way developers write, debug, and maintain code. These IDEs greatly enhanced developer productivity and set the stage for more sophisticated tools. IDEs like Microsoft Visual Studio provided comprehensive solutions for building complex software applications. Developers could now easily navigate through code, leverage libraries, and visually design user interfaces within a single environment. It is clear those IDEs help developers to be more and more productive, depending on the developing phase. The developers get a lot of support from IDEs. The problem is, each time that we add features in IDEs, it become more harder for developer to reach the  productive stage [Article 5]. That is why developers start using IDEs that have basic feature of an text editor and enhance it, using plugins and extension, to become a full featured IDE [Article 6]. 
-
+\subsection{Integrated Development Environment}
 
 % Different Server Protocol aujourd'hui mis en place
 A lot of work as been put to decouple the support of programming language such as code completion, code error, syntax highlighting and go-to definition. The objective was to enable the support of many programming language using language service [Article 8]. Microsoft's language server protocol (LSP) is a communication protocol, based on JSON-RPC, between a client, which is the IDE, and a server that offers language support. The protocol provides common features such as code completion, code error, syntax highlighting and go-to definition and many more. Many organizations such as the Eclipse Foundation and JetBrains are adapting or creating IDE (Eclipse, IntelliJ) to implement the LSP [Article 7]. 
@@ -126,9 +122,11 @@ In progress to find a solution
 
 \subsection{Visualization}
 
+The visualization tool used in the solution is Theia with the Trace Viewer extension. The advantage of this solution is that it implements the TSP protocol. This protocol already defines several routes based on the different views to which the analyzes provide results to display them. Since we have implemented the TSP protocol in the coordinator, we can directly use the Visualization tool without major changes.
 
+Since the TSP protocol does not allow exploring the traces available on the analysis nodes. It was decided that the role fell to the visualization tool to be able to offer the ability to find traces on remote machines. The Trace Viewer viewing tool has a file explorer to navigate folders and files available on the machine wherever the application is running. In the case of the cloud version of Theia the file explorer will be able to explore the files and folders on the remote machine on which the Theia server is started. This brings us to the problem that traces are distributed across different remote machines. Since Theia is not a distributed application capable of exploring files from several machines simultaneously. We decided to offer an alternative solution independent of Theia to be able to open the desired traces for the different analysis nodes. This way other visualization tool that don't implement a file explorer, but only implement the TSP protocol, will be able to use the coordinator.
 
-% Talk about TSP reuse of the view and all the view that implemented the TSP protocol
+The user will be able to generate a .trace-coordinator.yml configuration file. The file is separated into two sections. The first is the definition of the analysis nodes available in the cluster and the traces to open when the coordinator is ready. The second part consists of indicating the desired experiments when starting the coordinator. When the file is generated, all that remains is to start the coordinator. When the coordinator is started, traces are opened and experiments created. We can open the visualization Trace Viewer tool and configure the tool so that queries go to the coordinator instead of an analysis node.
 
 \section{Test Environment}
 
