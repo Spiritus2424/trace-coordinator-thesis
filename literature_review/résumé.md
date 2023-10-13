@@ -1,5 +1,7 @@
 # Résumé d'article
 
+
+
 ## Article 1: Kernel-level tracing for detecting stegomalware and covert channels in Linux environments
 
 Lien: https://www.engineeringvillage.com/app/doc/?docid=cpx_M7206888c178a2c96ed6M660c10178163190
@@ -151,3 +153,78 @@ Résumé: Migrate Tracecompass Java Pathfinder into Theia Trace Viewer Extension
 Lien: https://arxiv.org/pdf/2207.06875.pdf
 
 Résumé: Open Tracing Tools: Overview and Critical Comparison
+
+
+## Article 23: MÉTHODES EFFICACES DE PARALLÉLISATION DE L'ANALYSE DE TRACES NOYAU
+
+Lien: https://publications.polymtl.ca/1899/
+
+Résumé: 
+
+
+## Article 24: Programming on Parallel Machines
+
+Lien: https://web.cs.ucdavis.edu/~matloff/matloff/public_html/158/PLN/ParProcBook.pdf
+
+Résumé: 
+
+
+## Article 25: How to Build a Scalable Prometheus Architecture
+
+Lien: https://logz.io/blog/prometheus-architecture-at-scale/
+
+
+Résumé: 
+
+
+## Article 26: Monitoring architecture solutions for large organizations
+
+Lien: https://assets.nagios.com/downloads/general/docs/Monitoring_Architecture_Solutions_For_Large_Organizations.pdf
+
+Résumé: 
+
+## Article 27: The lttng tracer : A low impact performance and behavior monitor for gnu/linux  p. 209–224.
+
+
+Lien: https://www.researchgate.net/publication/228692715_The_LTTng_tracer_A_low_impact_performance_and_behavior_monitor_for_GNULinux
+
+Résumé: 
+
+## Article 28: HPCTOOLKIT: tools for performance analysis of optimized parallel programs
+
+Lien: https://onlinelibrary.wiley.com/doi/abs/10.1002/cpe.1553
+
+
+## Article 29: perf: Linux profiling with performance counters
+
+Lien: https://perf.wiki.kernel.org/
+
+
+## Article 30: Combining Instrumentation and Sampling for Trace-Based Application Performance Analysis
+
+Lien: https://link.springer.com/chapter/10.1007/978-3-319-16012-2_6
+
+## Article 31: Linux Programmer's Manual, 2016
+
+Lien: http://man7.org/linux/man-pages/man2/perf_event_open.2.html
+
+## Article 32: OProfile
+
+Lien: http://oprofile.sourceforge.net/about/
+
+
+## Article 33: Scalable Tools for Non-Intrusive Performance Debugging of Parallel Linux Workloads
+
+Lien: https://tu-dresden.de/zih/forschung/ressourcen/dateien/projekte/perf/perf_paper_2014.pdf?lang=en
+
+
+## Article 34: R-SHT: A state history tree with R-Tree properties for analysis and visualization of highly parallel system traces
+
+Lien: https://www.sciencedirect.com/science/article/abs/pii/S0164121217302108?via%3Dihub
+
+Résumé:
+
+
+## Article 35: Distributed Architecture for an Integrated Development Environment, Large Trace Analysis, and Visualization
+
+Lien: https://www.mdpi.com/1424-8220/21/16/5560
