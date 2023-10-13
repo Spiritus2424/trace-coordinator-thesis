@@ -228,3 +228,11 @@ Résumé:
 ## Article 35: Distributed Architecture for an Integrated Development Environment, Large Trace Analysis, and Visualization
 
 Lien: https://www.mdpi.com/1424-8220/21/16/5560
+
+## Article 36: Apptainer
+
+Lien: https://apptainer.org/
+
+## Article 37: Ansible
+
+Lien: https://www.ansible.com/
