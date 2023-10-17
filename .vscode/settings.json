@@ -30,5 +30,6 @@
         "tracepoint",
         "tracepoints",
         "userspace"
-    ]
+    ],
+    "cSpell.language": "en,fr"
 }

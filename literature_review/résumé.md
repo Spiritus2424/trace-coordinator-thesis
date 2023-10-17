@@ -138,7 +138,7 @@ Résumé:
 
 ## Article 20: Distributed Computation of the Critical Path from Execution Traces
 
-Lien: dans le dossier
+Lien: https://scholar.google.com/scholar?hl=fr&as_sdt=0%2C5&q=Distributed+Computation+of+the+Critical+Path+from+Execution+Traces&btnG=#d=gs_cit&t=1697492877137&u=%2Fscholar%3Fq%3Dinfo%3AUGztfmB8AW8J%3Ascholar.google.com%2F%26output%3Dcite%26scirp%3D0%26hl%3Dfr
 
 Résumé: Propose une nouvelle architecture pour calculer le chemin critique de manière distribuer. Consiste à distribuer les différents calcules et ensuite les aggrégers sur un noeud pour faire les derniers calcules.
 
@@ -161,12 +161,6 @@ Lien: https://publications.polymtl.ca/1899/
 
 Résumé: 
 
-
-## Article 24: Programming on Parallel Machines
-
-Lien: https://web.cs.ucdavis.edu/~matloff/matloff/public_html/158/PLN/ParProcBook.pdf
-
-Résumé: 
 
 
 ## Article 25: How to Build a Scalable Prometheus Architecture
