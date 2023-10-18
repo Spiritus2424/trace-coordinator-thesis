@@ -54,8 +54,7 @@ Trace Viewer est une extension open source disponible dans l'IDE Theia. Il utili
 
 \subsection{gRPC}
 
-\subsection{Language Server Protocol (LSP)}
-
+\subsection{Language Server Protocol}
 
 Le Language Server Protocol (LSP) est un protocole de communication basé sur JSON-RPC, développé par Microsoft, qui permet l'interaction entre un éditeur ou un environnement de développement intégré (EDI) et un serveur de langage de programmation \cite{Keidel2016}. Un serveur de langage fournit diverses fonctionnalités telles que l'autocomplétion de code, la coloration syntaxique, la navigation vers la définition, et la signalisation des erreurs dans le code. L'objectif principal du LSP est de standardiser la manière dont ces fonctionnalités sont mises à disposition des EDI. Cela permet de rendre l'implémentation d'un EDI indépendante du serveur de langage, favorisant ainsi la réutilisation des serveurs de langage dans différents EDI. Initialement conçu pour VS Code, le LSP a évolué grâce à la contribution d'organisations telles que Red Hat et Codeenvy. Plusieurs entreprises, dont la fondation Eclipse, Github, Sourcegraph et Red Hat, ont adapté leurs outils de développement populaires, tels qu'Eclipse, Atom, IntelliJ, Emacs, Sublime, pour prendre en charge le protocole. Actuellement, plus de 200 langages de programmation, y compris Java, C/C++, C\#, PHP, Python et JavaScript, prennent en charge le LSP.
 
@@ -67,15 +66,33 @@ Monto est une architecture qui connecte un EDI à des composants offrant des fon
 
 L'architecture Monto définit deux types de messages : les messages source et les messages produit. Les messages source, envoyés du module d'extension de l'EDI vers le broker, contiennent un identifiant unique, le nom du fichier, le langage de programmation et le contenu du fichier. Le broker distribue les messages source aux services appropriés et répond au module d'extension de l'EDI lorsque les opérations sont terminées. Les messages produits encapsulent une représentation intermédiaire générique, indépendante du langage et de l'EDI. Les communications sont effectuées via ZeroMQ, une bibliothèque de messagerie asynchrone haute performance, avec l'encodage des messages au format JSON. Cette approche permet d'avoir un serveur sans état et n'exige pas de conserver une copie des documents ouverts, contrairement au LSP. Cependant, l'envoi du contenu complet d'un fichier au format JSON peut ne pas être optimal en termes de transfert de données sur le réseau.
 
-% In the same way, a lot of work as been put to decouple the debugging tools and the IDEs. Microsoft debugger adapter protocol (DAP) is implement in Visual Studio Code and Theia. The base protocol exchanges messages that consist of a header and a content part (comparable to HTTP). Josselin et al. proposed a protocol that supports meaningful Domain-Specific Languages (DSLs) and that can be used with minimal effort within an IDE that implement DAP. This debugger allowing a generic interactive debugger to communicate with heterogeneous DSL runtime \cite{enet2023}. 
 
-% Marr et al. have presented the Kómpos protocol \cite{Marr2017} which proposes a concurrency-agnostic debugger protocol that decouples the debugger from the concurrency models employed by the target application. As a result, the underlying language runtime can define custom breakpoints, stepping operations, and execution events for each concurrency model it supports, and a debugger can expose them without having to be specifically adapted. In comparison to existing debugger protocol such as Java Debug Wire Protocol (JDWP) or the GNU Debugger (GDB) machine interface or the Chrome DevTools protocol or Visual Studio Code debug protocol, Kómpos protocol solution is not specific to a concurrency concept.
+\subsection{Language Server Index Format Specification}
+
+Language Server Index Format (LSIF) est un protocole et un format de données utilisés dans le cadre du LSP. LSIF a été développé pour améliorer les performances et l'efficacité de la communication entre l'éditeur de code et le serveur de langage. Il s'agit de générer et de stocker un index des informations du projet source, ce qui permet de réduire les délais de réponse lors de l'interaction avec le code source.
+
+1. Génération de l'index : Le serveur de langage génère un index LSIF en analysant le projet source. Cet index contient des informations sur la structure du code, les définitions de fonctions, les variables, les références croisées, etc.
+
+2. Stockage de l'index : Une fois généré, l'index LSIF est stocké dans un fichier ou une base de données. Ce fichier est souvent enregistré à un emplacement spécifique du projet.
+
+3. Utilisation par l'éditeur de code : Lorsque l'utilisateur interagit avec le code source dans l'éditeur, celui-ci peut interroger l'index LSIF pour obtenir des informations pertinentes, telles que des suggestions de complétion, la documentation, ou pour effectuer des actions de refactoring. Cela permet à l'éditeur de code de répondre plus rapidement aux demandes de l'utilisateur, car il n'a pas besoin de re-analyser tout le projet à chaque interaction.
+
+LSIF est particulièrement utile pour les projets de grande envergure où l'analyse statique du code peut être coûteuse en termes de ressources. En utilisant un index pré-généré, les performances de l'éditeur de code s'améliorent significativement.
+
+En résumé, LSIF est un format d'indexation utilisé dans le cadre du protocole LSP pour améliorer les performances de l'interaction entre les éditeurs de code et les serveurs de langage lors de la programmation. Il permet de stocker des informations structurées sur le code source, ce qui facilite la fourniture de fonctionnalités avancées aux développeurs.
 
 
+\subsection{Trace Server Protocol}
 
-\subsection{Language Server Index Format Specification (LSIF)}
+Le TSP a été développée lors de l'introduction de l'architecture client-serveur dans Trace Compass par Chen Kuang Piao en 2018. Ce protocol suit la philosophie des REST API et utilise actuellement JSON comme format d'échange de données. Cependant, le travail de Chen Kuang Piao a suggéré qu'il serait possible d'obtenir des améliorations significatives en termes de taille des messages et d'efficacité de sérialisation/désérialisation en utilisant Protobuf à la place. En sachant que la sérialisation/désérialisation devient un facteur très important dans le temps de réponse lorsque nous essayons de traiter des traces énormes [Article de Hao]. Il devient alors très important d'évaluer les solutions existantes qui nous permettrait de réduire l'impact de la sérialisation/désérialisation. Un impact qui devient encore plus important lorsque nous essayons de transitionner vers une architecture distribué qui risque de nécessité plusieurs communications réseaux, et donc plusieurs sérialisations/désérialisations pour une seule requête. 
 
-\subsection{Trace Server Protocol (TSP)}
+La transition vers un autre protocol est envisageable, car REST, en tant qu'approche, n'est pas lié à un format de données spécifique, mais plus au ressource accessible par les différentes d'accès. En plus des points d'accès permettant de récupérer des données de traces ou de sessions d'analyse, les points d'accès pour obtenir le modèle de visualisation des traces sont organisés par type de visualisation. Il existe des points d'accès dédiés aux analyses sous forme de graphes XY, au graphe temporel et sous forme de trableau. À savoir que le protocol est en pleine évolution. Alors il est important de considérer que le protocole risque de divaguer de ses objectif primaire en terme de principe, comme le standard RESTful. 
+
+Dans le protocole TSP, il est possible d'ajuster la résolution des données, ainsi que les items souhaitées en spécifiant les points de temps souhaités en tant que paramètres. Cette pratique n'est pas courante dans les normes REST qui n'impliquent généralement pas de filtrage des réponses dans le corps de la requête, mais plutôt dans les paramètres de la requête. À exception, nous retrouvons des paramètres de filtrage dans le corps de la requête lorsque nous rencontrons un problème lié à la limite de caractère possible dans un URL.
+
+% (Chen Kuang Piao, 2018) [16] \cite{chen2021distributed}
+% (Ericsson) [42] \cite{Ericsson_TSP_OPENAPI}
+% [41] \cite{github_ericsson_TSP}
 
 
 
