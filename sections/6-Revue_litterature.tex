@@ -19,35 +19,16 @@ Trace Viewer est une extension open source disponible dans l'IDE Theia. Il utili
 
 \subsection{Outils de visualisation de trace}
 
-Eﬀtinge et Kosyakov ont présenté Theia \cite{theia_2017}, un nouveau logiciel libre cadriciel pour les EDI. Theia a été mis de l'avant pour montrer la prochaine génération d'EDI après Eclipse. L'architecture de Theia a été penser pour être extensible, supporter plusieurs languages, supporter le lancement et le déboguage d'application. L'avantage principal de Theia est qui pourra être exécuter dans les navigateurs web et en local comme une application de bureau directement sur le système d'exploitation. Theia est un cadriciel d'EDI ce qui signifie qu'il est sera utilisé pour créer d'autre EDI qui auront toutes les avantages que Theia offre, mais personnaliser pour les besoins de l'utilisateur. 
+Eﬀtinge et Kosyakov ont présenté Theia \cite{theia_2017}, un nouveau logiciel libre cadriciel pour les EDI. Theia a été mis de l'avant pour montrer la prochaine génération d'EDI après Eclipse. L'architecture de Theia a été penser pour être extensible, supporter plusieurs languages, supporter le lancement et le déboguage d'application. L'avantage principal de Theia est qui pourra être exécuter dans les navigateurs web et en local comme une application de bureau directement sur le système d'exploitation. Theia est un cadriciel d'EDI ce qui signifie qu'il est sera utilisé pour créer d'autre EDI qui auront toutes les avantages que Theia offre, mais personnaliser pour les besoins de l'utilisateur.
 
 Le projet partage de nombreuses similitudes avec l'éditeur de code Microsoft, Visual Studio Code au niveau des technologies, de l'interface graphique et les personnalisations de l'EDI par plugins. Theia utilise Node.js, Electron comme technologie et implémente les protocoles LSP et DAP. Theia permet également d'installer des extensions lors de la compilation pour qu'elle fasse partie intégrante de l'EDI lors de la distribution. Les extensions entre Theia et VsCode sont compatibles.
 
 L'extension Theia Trace Viewer est la nouvelle application serveur-client développée par Ericsson et la Fondation Eclipse, avec d'autres contributeurs. Son objectif est de remplacer Trace Compass en tant qu'outil de traçage à usage général d'Eclipse. Comme décrit précédemment, Trace Viewer utilise une architecture serveur-client, dans laquelle le client communique avec le serveur via un protocole appelé Trace Server Protocol (TSP). \cite{desnoyers2006lttng} L'extension s'intègre dans l'EDI permettant de programmer, de tracer et de visualiser avec un outil et permet d'itérer plus rapidement dans les différentes phases de développement. L'extension permet de visualiser les traces sous plusieurs vues selon les analyses disponibles pour la trace dans le serveur.
 
-Grafana est une plateforme libre logiciel qui fournit des fonctionnalités pour interroger, visualiser et comprendre les mesures. Grafana a répondu aux questions sur la façon de visualiser les données, ce qui a mis au défi de nombreux développeurs ces dernières années. Grafana apporte toutes les données ensemble et les partage entre les équipes. Grâce à divers plugins, les utilisateurs peuvent obtenir ce qui leur convient le plus, ou même créer des plugins adaptés à leurs besoins. Grafana offre plusieurs fonctionnalités 
-
-• Visualisation des données : graphiques côté client rapides et flexibles avec de nombreuses options. Les métriques et les journaux seront visualisés dans le panneau
-
-• Tableau de bord dynamique : tableaux de bord dynamiques réutilisables avec plusieurs panneaux. Les variables du modèle affichées en haut du tableau de bord.
-
-• Explorer les métriques : comparez différentes sources de données et requêtes en les divisant vues. Explorez les données via des requêtes ad hoc et une analyse dynamique
-
-• Explorer les journaux : recherchez rapidement dans tous les journaux ou diffusez-les en direct via passer des métriques aux journaux avec des filtres d'étiquettes préservés.
-
-• Alertes : continuez à évaluer et à envoyer des systèmes de notification tels que Slack, ou PagerDuty
-
-• Sources de données mixtes : différentes sources de données peuvent être mélangées dans le même graphique.
-
-• Annotations : annotez des graphiques d'événements provenant de diverses sources de données. Événement le suivi affiche les métadonnées complètes et les balises d'événement
-
-• Filtres ad hoc : création d'une nouvelle valeur-clé à la volée, qui sera automatiquement être appliqué à toutes les requêtes qui utilisent cette source de données à l'aide de filtres ad hoc.
-
-Grafana est un outil de visualisation qui est souvent recommandé pour utiliser avec Prometheus. Grafana permet de personnaliser les tables et schémas à afficher à partir des points de données obtenus de Prometheus. Cette possibilité est très puissante, car différents utilisateurs peuvent adapter le format d'affichage de Grafana aux différents besoins, sans être contraint
-par celui de défaut \cite{Na_2020s}.
+Grafana est une plateforme libre logiciel qui fournit des fonctionnalités pour interroger, visualiser et comprendre les mesures. Grafana a répondu aux questions sur la façon de visualiser les données, ce qui a mis au défi de nombreux développeurs ces dernières années. Grafana apporte toutes les données ensemble et les partage entre les équipes. Grâce à divers plugins, les utilisateurs peuvent obtenir ce qui leur convient le plus, ou même créer des plugins adaptés à leurs besoins. Grafana offre plusieurs fonctionnalités pour permettre à l'utilisateur de visualiser les données, d'organiser les données ou même de notifier sur différente plateforme tel que slack ou PagerDuty. Grafana peut également se connecter à différente source de donnée externe tels que Excel, une base de donnée SQL et immédiatement permettre de visualiser ses données. Cela est très pratique puisque Grafana interprête directement les données au lieu de le faire manuellement ce qui nous sauve une étape qui peut parfois prendre du temps. Il permet également d'afficher plusieurs source de données différentes dans la même vue. Grafana est assez simple lorsqu'il est temps d'afficher les données. Après s'être connecté au différente source de donnée, l'utilisateur doit créer construire une requête pour extraire l'information pertinent. Ensuite, pour le cas d'utilisation l'utilisateur choisir l'outil de visualisation. \cite{do2021data} Grafana ne s'occupe par n'en plus d'instrumenter les applications, mais laisse plûtot le travail à d'autre outil plus spécialisé pour ce traitement comme Prometheus. À prendre en compte que Grafana n'offre pas des analyses sur un ensemble de donnée comme Trace Compass offre, mais réellement la possibilité d'afficher différentes données selon la requête construite.
 
 
-% Vampire
+% Vampire \cite{Mix_2018}
 
 
 \section{Traçage distribué}
@@ -70,7 +51,7 @@ par celui de défaut \cite{Na_2020s}.
 
 \subsection{Client-serveur}
 
-\subsection{Pair-à-pair} 
+\subsection{Pair-à-pair}
 
 \subsection{Maître-Ouvrier}
 
@@ -91,13 +72,13 @@ Le Language Server Protocol (LSP) est un protocole de communication basé sur JS
 
 Le LSP définit trois types de messages : les requêtes, les réponses et les notifications. Les requêtes sont initiées par le client en utilisant des appels de procédures JSON-RPC, et le serveur répond à chaque requête par une réponse. Les notifications peuvent être envoyées par le serveur ou le client, sans le retour d'une réponse. La figure X ci-dessous illustre un exemple d'interaction et d'échange de messages entre un EDI et un serveur de langage pendant une session d'édition de code. De plus, le LSP supporte la cancellation de requête et le rapport de progression. Grâce à cela, il est possible de canceller des requêtes en cours et d'obtenir des réponses partielles.
 
-[Figure https://microsoft.github.io/language-server-protocol/overviews/lsp/img/language-server-sequence.png ]
+    [Figure https://microsoft.github.io/language-server-protocol/overviews/lsp/img/language-server-sequence.png ]
 
 Les interactions entre le client et le serveur se basent sur des modèles indépendants du langage de programmation et de l'EDI. Par exemple, lorsqu'un client souhaite accéder à la définition d'une procédure, il échange un Uniform Resource Identifier (URI) avec le serveur pour localiser un document sur disque et une position dans ce document. Le LSP permet également au serveur de signaler quelles fonctionnalités il prend en charge, laissant au client la gestion de la durée de vie du serveur.
 
 Monto est une architecture qui connecte un EDI à des composants offrant des fonctionnalités de langage, adoptant une approche orientée service. Chaque fonctionnalité de langage, comme l'autocomplétion, est fournie par un service qui peut être décomposé en sous-services. L'architecture permet à l'EDI de connaître les fonctionnalités disponibles enregistrées auprès d'une composante appelée broker. Un module d'extension dans l'EDI gère la communication avec le broker. La figure X illustre une vue d'ensemble de l'interaction entre les composants de l'architecture Monto.
 
-[Figure de l'architecture Monto avec un broker]
+    [Figure de l'architecture Monto avec un broker]
 
 
 L'architecture Monto définit deux types de messages : les messages source et les messages produit. Les messages source, envoyés du module d'extension de l'EDI vers le broker, contiennent un identifiant unique, le nom du fichier, le langage de programmation et le contenu du fichier. Le broker distribue les messages source aux services appropriés et répond au module d'extension de l'EDI lorsque les opérations sont terminées. Les messages produits encapsulent une représentation intermédiaire générique, indépendante du langage et de l'EDI. Les communications sont effectuées via ZeroMQ, une bibliothèque de messagerie asynchrone haute performance, avec l'encodage des messages au format JSON. Cette approche permet d'avoir un serveur sans état et n'exige pas de conserver une copie des documents ouverts, contrairement au LSP. Cependant, l'envoi du contenu complet d'un fichier au format JSON peut ne pas être optimal en termes de transfert de données sur le réseau.
@@ -120,9 +101,9 @@ En résumé, LSIF est un format d'indexation utilisé dans le cadre du protocole
 
 \subsection{Trace Server Protocol}
 
-Le TSP a été développée lors de l'introduction de l'architecture client-serveur dans Trace Compass par Chen Kuang Piao en 2018. Ce protocol suit la philosophie des REST API et utilise actuellement JSON comme format d'échange de données. Cependant, le travail de Chen Kuang Piao a suggéré qu'il serait possible d'obtenir des améliorations significatives en termes de taille des messages et d'efficacité de sérialisation/désérialisation en utilisant Protobuf à la place. En sachant que la sérialisation/désérialisation devient un facteur très important dans le temps de réponse lorsque nous essayons de traiter des traces énormes [Article de Hao]. Il devient alors très important d'évaluer les solutions existantes qui nous permettrait de réduire l'impact de la sérialisation/désérialisation. Un impact qui devient encore plus important lorsque nous essayons de transitionner vers une architecture distribué qui risque de nécessité plusieurs communications réseaux, et donc plusieurs sérialisations/désérialisations pour une seule requête. 
+Le TSP a été développée lors de l'introduction de l'architecture client-serveur dans Trace Compass par Chen Kuang Piao en 2018. Ce protocol suit la philosophie des REST API et utilise actuellement JSON comme format d'échange de données. Cependant, le travail de Chen Kuang Piao a suggéré qu'il serait possible d'obtenir des améliorations significatives en termes de taille des messages et d'efficacité de sérialisation/désérialisation en utilisant Protobuf à la place. En sachant que la sérialisation/désérialisation devient un facteur très important dans le temps de réponse lorsque nous essayons de traiter des traces énormes [Article de Hao]. Il devient alors très important d'évaluer les solutions existantes qui nous permettrait de réduire l'impact de la sérialisation/désérialisation. Un impact qui devient encore plus important lorsque nous essayons de transitionner vers une architecture distribué qui risque de nécessité plusieurs communications réseaux, et donc plusieurs sérialisations/désérialisations pour une seule requête.
 
-La transition vers un autre protocol est envisageable, car REST, en tant qu'approche, n'est pas lié à un format de données spécifique, mais plus au ressource accessible par les différentes d'accès. En plus des points d'accès permettant de récupérer des données de traces ou de sessions d'analyse, les points d'accès pour obtenir le modèle de visualisation des traces sont organisés par type de visualisation. Il existe des points d'accès dédiés aux analyses sous forme de graphes XY, au graphe temporel et sous forme de trableau. À savoir que le protocol est en pleine évolution. Alors il est important de considérer que le protocole risque de divaguer de ses objectif primaire en terme de principe, comme le standard RESTful. 
+La transition vers un autre protocol est envisageable, car REST, en tant qu'approche, n'est pas lié à un format de données spécifique, mais plus au ressource accessible par les différentes d'accès. En plus des points d'accès permettant de récupérer des données de traces ou de sessions d'analyse, les points d'accès pour obtenir le modèle de visualisation des traces sont organisés par type de visualisation. Il existe des points d'accès dédiés aux analyses sous forme de graphes XY, au graphe temporel et sous forme de trableau. À savoir que le protocol est en pleine évolution. Alors il est important de considérer que le protocole risque de divaguer de ses objectif primaire en terme de principe, comme le standard RESTful.
 
 Dans le protocole TSP, il est possible d'ajuster la résolution des données, ainsi que les items souhaitées en spécifiant les points de temps souhaités en tant que paramètres. Cette pratique n'est pas courante dans les normes REST qui n'impliquent généralement pas de filtrage des réponses dans le corps de la requête, mais plutôt dans les paramètres de la requête. À exception, nous retrouvons des paramètres de filtrage dans le corps de la requête lorsque nous rencontrons un problème lié à la limite de caractère possible dans un URL.
 
