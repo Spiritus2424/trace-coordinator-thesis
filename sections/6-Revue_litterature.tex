@@ -4,13 +4,9 @@
 
 \subsection{Analyse de trace}
 
-
-
 Le traçage implique une utilisation spécialisée de la journalisation qui enregistre les événements d'exécution concernant l'exécution d'un programme. Le traçage est utilisé pour détecter et identifier les problèmes de performances, les problèmes de comportement et les problèmes de sécurité (TROUVEZ LA SOURCE ICI). Le traçage peut être effectué à plusieurs niveaux, notamment l'espace utilisateur, le noyau, le matériel, l'hyperviseur, le réseau, etc. Le logiciel qui capture ces événements est appelé traceur. Pour capturer ces événements, les points de trace doivent être insérés de manière statique ou dynamique. Dans le cas où le point de trace est inséré de manière statique, le code doit être modifié pour inclure les macros de traçage et doit être recompilé. Dans le cas où le point de trace est inséré dynamiquement, les points de trace sont ajoutés dynamiquement à un programme compilé et en cours d'exécution \cite{gregg2011dtrace}. Lors de l'exécution du programme, des événements seront émis et un traceur les capturera. À ce stade, un traceur produira un fichier de trace, organisé dans un format spécifique. Étant donné que le traceur doit s'exécuter en même temps que l'application principale, cela aura un impact sur le temps d'exécution de l'application principale. C'est pourquoi un traceur doit avoir une surcharge d'exécution minimale. Lorsque le traceur a fini de produire un fichier de trace, nous pouvons appliquer une analyse de trace.
 
 Linux inclut perf \cite{kernelPerfWiki}, un ensemble d'outils qui utilisent l'infrastructure perf\_event\_open \cite{man7Perf}. Ces outils puissants couvrent un large éventail d'informations liées aux performances disponibles pour le système d'exploitation. Les fonctionnalités disponibles incluent l'échantillonnage basé sur un compteur de performances, certains points d'instrumentation, la journalisation pour enregistrer les informations collectées et la visualisation sous forme de profils textuels. Cependant, perf utilise un format de fichier monolithique et ne dispose pas d'un moyen évolutif et convivial pour analyser et visualiser les délais résultants. Auparavant, nous utilisions perf pour la surveillance des performances et convertissions la trace résultante dans un format de fichier différent permettant l'utilisation d'outils de visualisation de chronologie \cite{schone2014scalable}.
-
-
 
 OProfile \cite{sourceforgeAboutOProfile} est un profileur statistique non intrusif construit sur l'infrastructure \textit{perf\_event-\_open}. Il prend en charge la surveillance à faible coût de l'ensemble du système et des processus uniques, mais est limité aux profils agrégés uniquement.
 
@@ -23,7 +19,35 @@ Trace Viewer est une extension open source disponible dans l'IDE Theia. Il utili
 
 \subsection{Outils de visualisation de trace}
 
+Eﬀtinge et Kosyakov ont présenté Theia \cite{theia_2017}, un nouveau logiciel libre cadriciel pour les EDI. Theia a été mis de l'avant pour montrer la prochaine génération d'EDI après Eclipse. L'architecture de Theia a été penser pour être extensible, supporter plusieurs languages, supporter le lancement et le déboguage d'application. L'avantage principal de Theia est qui pourra être exécuter dans les navigateurs web et en local comme une application de bureau directement sur le système d'exploitation. Theia est un cadriciel d'EDI ce qui signifie qu'il est sera utilisé pour créer d'autre EDI qui auront toutes les avantages que Theia offre, mais personnaliser pour les besoins de l'utilisateur. 
 
+Le projet partage de nombreuses similitudes avec l'éditeur de code Microsoft, Visual Studio Code au niveau des technologies, de l'interface graphique et les personnalisations de l'EDI par plugins. Theia utilise Node.js, Electron comme technologie et implémente les protocoles LSP et DAP. Theia permet également d'installer des extensions lors de la compilation pour qu'elle fasse partie intégrante de l'EDI lors de la distribution. Les extensions entre Theia et VsCode sont compatibles.
+
+L'extension Theia Trace Viewer est la nouvelle application serveur-client développée par Ericsson et la Fondation Eclipse, avec d'autres contributeurs. Son objectif est de remplacer Trace Compass en tant qu'outil de traçage à usage général d'Eclipse. Comme décrit précédemment, Trace Viewer utilise une architecture serveur-client, dans laquelle le client communique avec le serveur via un protocole appelé Trace Server Protocol (TSP). \cite{desnoyers2006lttng} L'extension s'intègre dans l'EDI permettant de programmer, de tracer et de visualiser avec un outil et permet d'itérer plus rapidement dans les différentes phases de développement. L'extension permet de visualiser les traces sous plusieurs vues selon les analyses disponibles pour la trace dans le serveur.
+
+Grafana est une plateforme libre logiciel qui fournit des fonctionnalités pour interroger, visualiser et comprendre les mesures. Grafana a répondu aux questions sur la façon de visualiser les données, ce qui a mis au défi de nombreux développeurs ces dernières années. Grafana apporte toutes les données ensemble et les partage entre les équipes. Grâce à divers plugins, les utilisateurs peuvent obtenir ce qui leur convient le plus, ou même créer des plugins adaptés à leurs besoins. Grafana offre plusieurs fonctionnalités 
+
+• Visualisation des données : graphiques côté client rapides et flexibles avec de nombreuses options. Les métriques et les journaux seront visualisés dans le panneau
+
+• Tableau de bord dynamique : tableaux de bord dynamiques réutilisables avec plusieurs panneaux. Les variables du modèle affichées en haut du tableau de bord.
+
+• Explorer les métriques : comparez différentes sources de données et requêtes en les divisant vues. Explorez les données via des requêtes ad hoc et une analyse dynamique
+
+• Explorer les journaux : recherchez rapidement dans tous les journaux ou diffusez-les en direct via passer des métriques aux journaux avec des filtres d'étiquettes préservés.
+
+• Alertes : continuez à évaluer et à envoyer des systèmes de notification tels que Slack, ou PagerDuty
+
+• Sources de données mixtes : différentes sources de données peuvent être mélangées dans le même graphique.
+
+• Annotations : annotez des graphiques d'événements provenant de diverses sources de données. Événement le suivi affiche les métadonnées complètes et les balises d'événement
+
+• Filtres ad hoc : création d'une nouvelle valeur-clé à la volée, qui sera automatiquement être appliqué à toutes les requêtes qui utilisent cette source de données à l'aide de filtres ad hoc.
+
+Grafana est un outil de visualisation qui est souvent recommandé pour utiliser avec Prometheus. Grafana permet de personnaliser les tables et schémas à afficher à partir des points de données obtenus de Prometheus. Cette possibilité est très puissante, car différents utilisateurs peuvent adapter le format d'affichage de Grafana aux différents besoins, sans être contraint
+par celui de défaut \cite{Na_2020s}.
+
+
+% Vampire
 
 
 \section{Traçage distribué}
@@ -31,6 +55,13 @@ Trace Viewer est une extension open source disponible dans l'IDE Theia. Il utili
 \subsection{Système distribué}
 
 \subsection{Outils de traçage distribué}
+
+% Recent efforts to parallelize trace analysis, as exemplified by the work of Reumont-Locke (2015) \cite{reumont2015methodes} and Martin (2018) \cite{Martin2018}, have aimed to enhance the efficiency of this process. Nevertheless, optimizing efficiency alone cannot fully address the scalability challenges inherent in distributed environments. Even if a trace analysis tool operates at peak efficiency, it remains constrained by the computational capabilities of the underlying hardware, typically equivalent to the traced system in the best-case scenario. When we scale up the number of traced nodes to hundreds or thousands, the analysis tool quickly becomes overwhelmed. This bottleneck becomes particularly problematic in applications requiring continuous uptime, as anomalies can rapidly escalate within clusters (Matloff) \cite{matloff2011programming}, and delays in data analysis during investigations only exacerbate the situation.
+
+% A similar approach observed in distributed tracing platforms involves deploying multiple tracers, each running on a traced machine, with all trace data being transmitted to a central collector for subsequent analysis. In some instances, these tracers take the form of client libraries, allowing for the creation of custom events with application-specific information, in contrast to the more opaque black-box tracing approach of tools like Nagios. Prometheus addresses scalability concerns by enabling the organization of Prometheus instances into a federation, as demonstrated by Reback in 2021 \cite{Logz.io_prometheus_2023}. This approach facilitates the establishment of a multi-level hierarchy of Prometheus servers, with each level aggregating and forwarding data to the level above. Notably, Nagios also adopted a similar approach to mitigate its own scalability challenges (Nagios) \cite{Nagios2019}.
+
+% While horizontally scaling analysis servers is an effective strategy, it is essential to recognize that Prometheus analyses primarily consist of simple metrics, making aggregation feasible. However, applying the same model to more complex analysis processes, such as those offered by Trace Compass, presents substantial challenges. The nature of their aggregations varies significantly between different analysis types, making direct application of the Prometheus approach difficult in such cases.
+
 
 \subsection{Outils de visualisation de trace distribué}
 
@@ -58,11 +89,16 @@ Trace Viewer est une extension open source disponible dans l'IDE Theia. Il utili
 
 Le Language Server Protocol (LSP) est un protocole de communication basé sur JSON-RPC, développé par Microsoft, qui permet l'interaction entre un éditeur ou un environnement de développement intégré (EDI) et un serveur de langage de programmation \cite{Keidel2016}. Un serveur de langage fournit diverses fonctionnalités telles que l'autocomplétion de code, la coloration syntaxique, la navigation vers la définition, et la signalisation des erreurs dans le code. L'objectif principal du LSP est de standardiser la manière dont ces fonctionnalités sont mises à disposition des EDI. Cela permet de rendre l'implémentation d'un EDI indépendante du serveur de langage, favorisant ainsi la réutilisation des serveurs de langage dans différents EDI. Initialement conçu pour VS Code, le LSP a évolué grâce à la contribution d'organisations telles que Red Hat et Codeenvy. Plusieurs entreprises, dont la fondation Eclipse, Github, Sourcegraph et Red Hat, ont adapté leurs outils de développement populaires, tels qu'Eclipse, Atom, IntelliJ, Emacs, Sublime, pour prendre en charge le protocole. Actuellement, plus de 200 langages de programmation, y compris Java, C/C++, C\#, PHP, Python et JavaScript, prennent en charge le LSP.
 
-Le LSP définit trois types de messages : les requêtes, les réponses et les notifications. Les requêtes sont initiées par le client en utilisant des appels de procédures JSON-RPC, et le serveur répond à chaque requête par une réponse. Les notifications peuvent être envoyées par le serveur ou le client, sans nécessité de réponse. La figure ci-dessous illustre un exemple d'interaction et d'échange de messages entre un EDI et un serveur de langage pendant une session d'édition de code. De plus, le LSP supporte la cancellation de requête et le rapport de progression. Grâce à cela, il est possible de canceller des requêtes en cours et d'obtenir des réponses partielles.
+Le LSP définit trois types de messages : les requêtes, les réponses et les notifications. Les requêtes sont initiées par le client en utilisant des appels de procédures JSON-RPC, et le serveur répond à chaque requête par une réponse. Les notifications peuvent être envoyées par le serveur ou le client, sans le retour d'une réponse. La figure X ci-dessous illustre un exemple d'interaction et d'échange de messages entre un EDI et un serveur de langage pendant une session d'édition de code. De plus, le LSP supporte la cancellation de requête et le rapport de progression. Grâce à cela, il est possible de canceller des requêtes en cours et d'obtenir des réponses partielles.
+
+[Figure https://microsoft.github.io/language-server-protocol/overviews/lsp/img/language-server-sequence.png ]
 
 Les interactions entre le client et le serveur se basent sur des modèles indépendants du langage de programmation et de l'EDI. Par exemple, lorsqu'un client souhaite accéder à la définition d'une procédure, il échange un Uniform Resource Identifier (URI) avec le serveur pour localiser un document sur disque et une position dans ce document. Le LSP permet également au serveur de signaler quelles fonctionnalités il prend en charge, laissant au client la gestion de la durée de vie du serveur.
 
-Monto est une architecture qui connecte un EDI à des composants offrant des fonctionnalités de langage, adoptant une approche orientée service. Chaque fonctionnalité de langage, comme l'autocomplétion, est fournie par un service qui peut être décomposé en sous-services. L'architecture permet à l'EDI de connaître les fonctionnalités disponibles enregistrées auprès d'une composante appelée broker. Un module d'extension dans l'EDI gère la communication avec le broker. La figure illustre une vue d'ensemble de l'interaction entre les composants de l'architecture Monto.
+Monto est une architecture qui connecte un EDI à des composants offrant des fonctionnalités de langage, adoptant une approche orientée service. Chaque fonctionnalité de langage, comme l'autocomplétion, est fournie par un service qui peut être décomposé en sous-services. L'architecture permet à l'EDI de connaître les fonctionnalités disponibles enregistrées auprès d'une composante appelée broker. Un module d'extension dans l'EDI gère la communication avec le broker. La figure X illustre une vue d'ensemble de l'interaction entre les composants de l'architecture Monto.
+
+[Figure de l'architecture Monto avec un broker]
+
 
 L'architecture Monto définit deux types de messages : les messages source et les messages produit. Les messages source, envoyés du module d'extension de l'EDI vers le broker, contiennent un identifiant unique, le nom du fichier, le langage de programmation et le contenu du fichier. Le broker distribue les messages source aux services appropriés et répond au module d'extension de l'EDI lorsque les opérations sont terminées. Les messages produits encapsulent une représentation intermédiaire générique, indépendante du langage et de l'EDI. Les communications sont effectuées via ZeroMQ, une bibliothèque de messagerie asynchrone haute performance, avec l'encodage des messages au format JSON. Cette approche permet d'avoir un serveur sans état et n'exige pas de conserver une copie des documents ouverts, contrairement au LSP. Cependant, l'envoi du contenu complet d'un fichier au format JSON peut ne pas être optimal en termes de transfert de données sur le réseau.
 
@@ -99,6 +135,9 @@ Dans le protocole TSP, il est possible d'ajuster la résolution des données, ai
 
 \section{Conclusion de la revue littéraire}
 
+% A travers cette revue de littérature, nous avons vu que la modularisation de Trace Compass a créé la fondation pour pouvoir le déployer dans un environnement distribué et qu'il existe plusieurs travaux autour du sujet du traçage distribué qui se concentrent sur différentes parties. Nous avons aussi vu que le flux de travail instrumentation-collection-analyse-visualisation/alerte est aussi commun en dehors du domaine du traçage. Toutes ces applications proposent aussi des modèles robustes avec la mise à l'échelle en tête. Pourtant, les opérateurs d'agrégation dans ces outils, s'il y a lieu, sont souvent prédéfinis et fortement couplés avec le format de trace et l'écosystème, malgré qu'ils possèdent un langage de requête puissant. Cela gêne l'adaptation lors des cas d'usage spécifiques et force les utilisateurs à réinventer la logique.
+
+% En conséquence, nous souhaitons d'abord proposer une organisation qui permet un fonctionnement efficace sur des grappes de calcul pour Trace Compass, en s'inspirant de l'architecture des outils de trace distribués à l'état de l'art. Avec cette nouvelle architecture, nous proposons ensuite une extension du protocole actuel permettant de construire un modèle de programmation qui facilite le développement de nouveaux types d'agrégation dans la visualisation de trace.
 
 
 % \section{Related Work}
