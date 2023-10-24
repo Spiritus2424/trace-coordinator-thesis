@@ -17,14 +17,19 @@ HPCToolkit \cite{adhianto2010hpctoolkit} est une suite d'outils d'analyse des pe
 Trace Viewer est une extension open source disponible dans l'IDE Theia. Il utilise le protocole Trace-Server-Protocol pour interroger les modèles de données et visualiser différentes analyses de trace. Une analyse de trace lit une trace de manière séquentielle et stocke ses résultats (appelés modèles d'état) dans une structure de données pouvant être écrite sur disque. À partir des événements de trace, l'analyse extrairait les intervalles des valeurs d'état pour différentes ressources système (CPU, processus, disques, etc.). \cite{chen2021distributed}
 
 
+
 \subsection{Outils de visualisation de trace}
 
-Eﬀtinge et Kosyakov ont présenté Theia \cite{theia_2017}, un nouveau logiciel libre cadriciel pour les EDI. Theia a été mis de l'avant pour montrer la prochaine génération d'EDI après Eclipse. L'architecture de Theia a été penser pour être extensible, supporter plusieurs languages, supporter le lancement et le déboguage d'application. L'avantage principal de Theia est qui pourra être exécuter dans les navigateurs web et en local comme une application de bureau directement sur le système d'exploitation. Theia est un cadriciel d'EDI ce qui signifie qu'il est sera utilisé pour créer d'autre EDI qui auront toutes les avantages que Theia offre, mais personnaliser pour les besoins de l'utilisateur.
+Efftinge et Kosyakov ont présenté Theia \cite{theia_2017}, un nouveau logiciel libre cadriciel pour les EDI. Theia a été mis de l'avant pour montrer la prochaine génération d'EDI après Eclipse. L'architecture de Theia a été penser pour être extensible, supporter plusieurs languages, supporter le lancement et le déboguage d'application. L'avantage principal de Theia est qui pourra être exécuter dans les navigateurs web et en local comme une application de bureau directement sur le système d'exploitation. Theia est un cadriciel d'EDI ce qui signifie qu'il est sera utilisé pour créer d'autre EDI qui auront toutes les avantages que Theia offre, mais personnaliser pour les besoins de l'utilisateur.
+
 
 Le projet partage de nombreuses similitudes avec l'éditeur de code Microsoft, Visual Studio Code au niveau des technologies, de l'interface graphique et les personnalisations de l'EDI par plugins. Theia utilise Node.js, Electron comme technologie et implémente les protocoles LSP et DAP. Theia permet également d'installer des extensions lors de la compilation pour qu'elle fasse partie intégrante de l'EDI lors de la distribution. Les extensions entre Theia et VsCode sont compatibles.
 
+% Theia
 L'extension Theia Trace Viewer est la nouvelle application serveur-client développée par Ericsson et la Fondation Eclipse, avec d'autres contributeurs. Son objectif est de remplacer Trace Compass en tant qu'outil de traçage à usage général d'Eclipse. Comme décrit précédemment, Trace Viewer utilise une architecture serveur-client, dans laquelle le client communique avec le serveur via un protocole appelé Trace Server Protocol (TSP). \cite{desnoyers2006lttng} L'extension s'intègre dans l'EDI permettant de programmer, de tracer et de visualiser avec un outil et permet d'itérer plus rapidement dans les différentes phases de développement. L'extension permet de visualiser les traces sous plusieurs vues selon les analyses disponibles pour la trace dans le serveur.
 
+
+% Grafana
 Grafana est une plateforme libre logiciel qui fournit des fonctionnalités pour interroger, visualiser et comprendre les mesures. Grafana a répondu aux questions sur la façon de visualiser les données, ce qui a mis au défi de nombreux développeurs ces dernières années. Grafana apporte toutes les données ensemble et les partage entre les équipes. Grâce à divers plugins, les utilisateurs peuvent obtenir ce qui leur convient le plus, ou même créer des plugins adaptés à leurs besoins. Grafana offre plusieurs fonctionnalités pour permettre à l'utilisateur de visualiser les données, d'organiser les données ou même de notifier sur différente plateforme tel que slack ou PagerDuty. Grafana peut également se connecter à différente source de donnée externe tels que Excel, une base de donnée SQL et immédiatement permettre de visualiser ses données. Cela est très pratique puisque Grafana interprête directement les données au lieu de le faire manuellement ce qui nous sauve une étape qui peut parfois prendre du temps. Il permet également d'afficher plusieurs source de données différentes dans la même vue. Grafana est assez simple lorsqu'il est temps d'afficher les données. Après s'être connecté au différente source de donnée, l'utilisateur doit créer construire une requête pour extraire l'information pertinent. Ensuite, pour le cas d'utilisation l'utilisateur choisir l'outil de visualisation. \cite{do2021data} Grafana ne s'occupe par n'en plus d'instrumenter les applications, mais laisse plûtot le travail à d'autre outil plus spécialisé pour ce traitement comme Prometheus. À prendre en compte que Grafana n'offre pas des analyses sur un ensemble de donnée comme Trace Compass offre, mais réellement la possibilité d'afficher différentes données selon la requête construite.
 
 
@@ -33,6 +38,12 @@ Vampir fournit un cadre facile à utiliser qui permet aux développeurs d'affich
 
 
 \section{Traçage distribué}
+
+Les efforts récents pour paralléliser l'analyse des traces, comme en témoignent les travaux de Reumont-Locke (2015) \cite{reumont2015methodes} et Martin (2018) \cite{Martin2018}, ont visé à améliorer l'efficacité de ce processus. Néanmoins, l'optimisation de l'efficacité ne peut à elle seule répondre pleinement aux défis d'évolutivité inhérents aux environnements distribués. Même si un outil d'analyse de trace fonctionne avec une efficacité maximale, il reste limité par les capacités de calcul du matériel sous-jacent, généralement équivalentes au système tracé dans le meilleur des cas. Lorsque nous augmentons le nombre de nœuds tracés jusqu'à des centaines ou des milliers, l'outil d'analyse devient rapidement submergé. Ce goulot d'étranglement devient particulièrement problématique dans les applications nécessitant une disponibilité continue, car les anomalies peuvent rapidement s'aggraver au sein des clusters (Matloff) \cite{matloff2011programming}, et les retards dans l'analyse des données pendant les enquêtes ne font qu'exacerber la situation.
+
+Une approche similaire observée dans les plateformes de traçage distribuées implique le déploiement de plusieurs traceurs, chacun fonctionnant sur une machine tracée, toutes les données de trace étant transmises à un collecteur central pour une analyse ultérieure. Dans certains cas, ces traceurs prennent la forme de bibliothèques client, permettant la création d'événements personnalisés avec des informations spécifiques à l'application, contrairement à l'approche de traçage plus opaque en boîte noire d'outils comme Nagios. Prometheus répond aux problèmes d'évolutivité en permettant l'organisation des instances Prometheus dans une fédération, comme l'a démontré Reback en 2021 \cite{Logz.io_prometheus_2023}. Cette approche facilite l'établissement d'une hiérarchie à plusieurs niveaux de serveurs Prometheus, chaque niveau regroupant et transmettant les données au niveau supérieur. Notamment, Nagios a également adopté une approche similaire pour atténuer ses propres défis d'évolutivité \cite{Nagios2019}.
+
+Bien que la mise à l'échelle horizontale des serveurs d'analyse soit une stratégie efficace, il est essentiel de reconnaître que les analyses Prometheus consistent principalement en des métriques simples, ce qui rend l'agrégation possible. Cependant, appliquer le même modèle à des processus d'analyse plus complexes, tels que ceux proposés par Trace Compass, présente des défis considérables. La nature de leurs agrégations varie considérablement selon les différents types d'analyse, ce qui rend difficile l'application directe de l’approche Prometheus dans de tels cas.
 
 \subsection{Système distribué}
 
@@ -44,8 +55,12 @@ Une approche similaire observée dans les plateformes de traçage distribuées i
 
 Bien que la mise à l'échelle horizontale des serveurs d'analyse soit une stratégie efficace, il est essentiel de reconnaître que les analyses Prometheus consistent principalement en des métriques simples, ce qui rend l'agrégation possible. Cependant, appliquer le même modèle à des processus d'analyse plus complexes, tels que ceux proposés par Trace Compass, présente des défis considérables. La nature de leurs agrégations varie considérablement selon les différents types d'analyse, ce qui rend difficile l'application directe de l'approche Prometheus dans de tels cas.
 
+
 \subsection{Outils de visualisation de trace distribué}
 
+Les efforts récents pour paralléliser l'analyse du chemin critique, comme en témoignent les travaux de Denis et Dagenais, ont visé à améliorer l'efficacité de ce processus. Les événements de noyau nécessaires à l'exécution de l'analyse sont identifiés. Une architecture distribuée qui ne nécessite aucun transfert de fichiers entre le client et les noeuds tracés et permet la distribution du calcul d'analyse de trace est présentée. Ils explorent également l'algorithme pour résoudre les dépendances distantes \cite{matloff2011programming}.
+
+Bien que les architectures distribuées offrent une solution au problème d'évolutivité, il est difficile d'exploiter pleinement leurs avantages dus à la communication réseau lors de la diffusion vers tous les noeuds. C'est pourquoi restreindre les communications uniquement au nœud essentiel au calcul est crucial \cite{denys2023distributed}.
 
 \section{Architecture distribué}
 
@@ -126,39 +141,3 @@ Dans le protocole TSP, il est possible d'ajuster la résolution des données, ai
 
 % En conséquence, nous souhaitons d'abord proposer une organisation qui permet un fonctionnement efficace sur des grappes de calcul pour Trace Compass, en s'inspirant de l'architecture des outils de trace distribués à l'état de l'art. Avec cette nouvelle architecture, nous proposons ensuite une extension du protocole actuel permettant de construire un modèle de programmation qui facilite le développement de nouveaux types d'agrégation dans la visualisation de trace.
 
-
-% \section{Related Work}
-
-% The related work is divided into six sections. The first section detail recent work on Tracing Analysis. The second section report recent work on integrated development environment. The third section present different distributed architecture that application use for scaling. The fourth section expose recent work on distributed analysis. The fifth section report recent work on distributed critical path. The sixth section present recent work on Theia.
-
-% \subsection{Integrated Development Environment}
-% % \subsection{Scaling Distributed Architecture}
-
-
-
-
-% \subsection{Distributed Analysis}
-
-% Recent efforts to parallelize trace analysis, as exemplified by the work of Reumont-Locke (2015) \cite{reumont2015methodes} and Martin (2018) \cite{Martin2018}, have aimed to enhance the efficiency of this process. Nevertheless, optimizing efficiency alone cannot fully address the scalability challenges inherent in distributed environments. Even if a trace analysis tool operates at peak efficiency, it remains constrained by the computational capabilities of the underlying hardware, typically equivalent to the traced system in the best-case scenario. When we scale up the number of traced nodes to hundreds or thousands, the analysis tool quickly becomes overwhelmed. This bottleneck becomes particularly problematic in applications requiring continuous uptime, as anomalies can rapidly escalate within clusters (Matloff) \cite{matloff2011programming}, and delays in data analysis during investigations only exacerbate the situation.
-
-% A similar approach observed in distributed tracing platforms involves deploying multiple tracers, each running on a traced machine, with all trace data being transmitted to a central collector for subsequent analysis. In some instances, these tracers take the form of client libraries, allowing for the creation of custom events with application-specific information, in contrast to the more opaque black-box tracing approach of tools like Nagios. Prometheus addresses scalability concerns by enabling the organization of Prometheus instances into a federation, as demonstrated by Reback in 2021 \cite{Logz.io_prometheus_2023}. This approach facilitates the establishment of a multi-level hierarchy of Prometheus servers, with each level aggregating and forwarding data to the level above. Notably, Nagios also adopted a similar approach to mitigate its own scalability challenges (Nagios) \cite{Nagios2019}.
-
-% While horizontally scaling analysis servers is an effective strategy, it is essential to recognize that Prometheus analyses primarily consist of simple metrics, making aggregation feasible. However, applying the same model to more complex analysis processes, such as those offered by Trace Compass, presents substantial challenges. The nature of their aggregations varies significantly between different analysis types, making direct application of the Prometheus approach difficult in such cases.
-
-% \subsection{Distributed Critical Path}
-
-% Recent efforts to parallelize critical path analysis, as exemplified by the work of Denis and Dagenais, have aimed to enhance the efficiency of this process. The kernel events necessary for analysis execution are identified. A distributed architecture that did not require any file transfer between the client and traced nodes, and allowed the distribution of trace analysis computation is presented. They also explore the algorithm to resolve the remote dependencies \cite{matloff2011programming}.
-
-% Although distributed architectures offer a solution to the scalability problem, it is challenging to fully leverage their benefits due to network communication when broadcasting to all nodes. This is why restricting communications solely to the node essential for the calculation is crucial \cite{denys2023distributed}.
-
-
-% \subsection{Theia - Trace Viewer Extension}
-
-% Eﬀtinge and Kosyakov have presented Theia (Eﬀtinge and Kosyakov, 2017), a new open-
-% source IDE framework for building IDEs that could run both as a desktop application or in
-% a web browser connected to a remote backend. The project shares a lot of similarities with
-% Microsoft code editor, Visual Studio Code. Theia uses Node.js, Electron and implements
-% the LSP.
-
-
-% Theia Trace Viewer extension is the newly developed server-client application developed by Ericsson and the Eclipse Foundation, along with other contributors. It purpose is to replace Trace Compass as the Eclipse general-purpose tracing tool. As previously described Trace Viewer uses a server-client architecture, where the client communicates with the server through a protocol called Trace Server Protocol (TSP) \cite{desnoyers2006lttng}.
