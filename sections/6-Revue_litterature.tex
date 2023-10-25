@@ -43,7 +43,7 @@ Les efforts récents pour paralléliser l'analyse des traces, comme en témoigne
 
 Une approche similaire observée dans les plateformes de traçage distribuées implique le déploiement de plusieurs traceurs, chacun fonctionnant sur une machine tracée, toutes les données de trace étant transmises à un collecteur central pour une analyse ultérieure. Dans certains cas, ces traceurs prennent la forme de bibliothèques client, permettant la création d'événements personnalisés avec des informations spécifiques à l'application, contrairement à l'approche de traçage plus opaque en boîte noire d'outils comme Nagios. Prometheus répond aux problèmes d'évolutivité en permettant l'organisation des instances Prometheus dans une fédération, comme l'a démontré Reback en 2021 \cite{Logz.io_prometheus_2023}. Cette approche facilite l'établissement d'une hiérarchie à plusieurs niveaux de serveurs Prometheus, chaque niveau regroupant et transmettant les données au niveau supérieur. Notamment, Nagios a également adopté une approche similaire pour atténuer ses propres défis d'évolutivité \cite{Nagios2019}.
 
-Bien que la mise à l'échelle horizontale des serveurs d'analyse soit une stratégie efficace, il est essentiel de reconnaître que les analyses Prometheus consistent principalement en des métriques simples, ce qui rend l'agrégation possible. Cependant, appliquer le même modèle à des processus d'analyse plus complexes, tels que ceux proposés par Trace Compass, présente des défis considérables. La nature de leurs agrégations varie considérablement selon les différents types d'analyse, ce qui rend difficile l'application directe de l’approche Prometheus dans de tels cas.
+Bien que la mise à l'échelle horizontale des serveurs d'analyse soit une stratégie efficace, il est essentiel de reconnaître que les analyses Prometheus consistent principalement en des métriques simples, ce qui rend l'agrégation possible. Cependant, appliquer le même modèle à des processus d'analyse plus complexes, tels que ceux proposés par Trace Compass, présente des défis considérables. La nature de leurs agrégations varie considérablement selon les différents types d'analyse, ce qui rend difficile l'application directe de l'approche Prometheus dans de tels cas.
 
 \subsection{Système distribué}
 
@@ -70,56 +70,27 @@ Bien que les architectures distribuées offrent une solution au problème d'évo
 
 \section{Architecture distribué}
 
-L'architecture logicielle est une description abstraite de la structure et de l'organisation
-d'un ou de plusieurs systèmes. Un système est une collection de composantes logicielles
-et les interactions entre ces composantes sont appelées connecteurs. À l'aide de schémas,
-l'architecture logicielle expose comment un système doit être conçu aﬁn de répondre à des
-exigences techniques et fonctionnelles, tout en prenant en considération d'autres qualités
-logicielles telles que la performance, la réutilisabilité ou la ﬂexibilité. Il devient de plus en plus important de choisir sa prochaine architecture avec des critères à long terme \cite{Martens_2010}. Une mauvaise architecture peut être énormément couteuse et même réduire la qualité du service \cite{Kolny_2023}.
+L'architecture logicielle est une représentation abstraite de la structure et de l'organisation d'un ou plusieurs systèmes informatiques. Un système est formé par un ensemble de composants logiciels, et les interactions entre ces composants sont désignées sous le nom de "connecteurs". En utilisant des diagrammes et des schémas, l'architecture logicielle décrit comment un système doit être conçu pour répondre à des exigences techniques et fonctionnelles, tout en prenant en compte d'autres caractéristiques logicielles telles que la performance, la réutilisabilité, et la flexibilité \cite{Martens_2010}. Il devient de plus en plus crucial de prendre en considération des critères à long terme lors du choix d'une architecture, car une mauvaise architecture peut entraîner des coûts considérables et altérer la qualité du service offert. \cite{Kolny_2023}
 
+% p.46
 \subsection{Client-serveur}
-L'architecture client-serveur \cite{Coulouris_2012} est historiquement la plus importante
-et la plus utilisée pour les systèmes distribués. Dans ce style architectural, deux entités se
-distinguent par leurs responsabilités : un client qui veut accéder à une ressource et un serveur
-qui gère les ressources. Généralement, un serveur est une machine ou un processus doté d'une
-bonne puissance de calcul et qui peut répondre à plusieurs requêtes concurrentes de clients.
-Les clients n'interagissent pas directement entre eux, mais par le biais du serveur. D'ailleurs,
-les clients ne sont pas nécessairement sur la même machine physique que le serveur, ce qui
-implique un protocole de communication entre le client et le serveur. Finalement, un serveur
-peut être à son tour un client d'un autre serveur. Par exemple, un serveur web est un serveur
-pour un navigateur web, mais devient client pour une base de données.
-L'architecture client-serveur se décline en plusieurs sous-catégories telles que le client lourd
-et le client léger. Dans la première, le client a amplement plus de responsabilités en ce qui
-concerne les calculs et le traitement des données, ce qui réduit la responsabilité du serveur à
-simplement envoyer l'information demandée. Dans la deuxième, c'est l'inverse, le serveur est
-responsable des calculs et du traitement des données, ce qui laisse seulement la responsabilité
-d'affichage au client. Ces deux sous-catégories visent à mitiger les conséquences reliées à la
-panne du serveur.
 
+Cette architecture est couramment évoquée lorsqu'il est question de systèmes distribués. Elle détient une importance historique considérable et demeure la plus largement adoptée. La figure X illustre une structure simple dans laquelle les processus endossent les rôles de clients ou de serveurs. Dans ce modèle architectural, deux entités se distinguent par leurs responsabilités : d'une part, le client, dont l'objectif est d'accéder à une ressource, et de l'autre, le serveur, chargé de gérer ces ressources \cite{Terra_2023}. Généralement, un serveur désigne une machine ou un processus doté de puissance de calcul suffisante pour répondre à plusieurs requêtes concurrentes de clients. Les clients n'interagissent pas directement entre eux, mais passent par l'intermédiaire du serveur. En particulier, les processus clients interagissent avec des processus serveurs individuels sur des ordinateurs hôtes potentiellement séparés, ce qui leur permet d'accéder aux ressources partagées qu'ils gèrent. Par ailleurs, les clients ne sont pas nécessairement hébergés sur la même machine physique que le serveur, ce qui nécessite la mise en place d'un protocole de communication entre le client et le serveur. Les serveurs peuvent à leur tour jouer le rôle de clients vis-à-vis d'autres serveurs, comme le montre la figure. Par exemple, un serveur web agit en tant que serveur pour un navigateur web, mais devient lui-même client lorsqu'il interagit avec une base de données \cite{Coulouris_2012}.
 
-L'architecture
+L'architecture client-serveur, également connue sous le nom de modèle client-serveur, est un concept de réseau qui répartit les tâches et les charges de travail entre les clients et les serveurs, qu'ils résident sur le même système ou soient connectés via un réseau informatique. Cette architecture se subdivise en plusieurs sous-catégories, notamment le client lourd et le client léger. Dans le premier cas, le client assume une grande part de la responsabilité en ce qui concerne les calculs et le traitement des données, ce qui réduit la tâche du serveur à la simple transmission des informations demandées. Dans le second cas, c'est l'inverse : le serveur prend en charge les calculs et le traitement des données, tandis que le client se charge principalement de l'affichage. Ces deux variantes servent à répondre au besoin de l'application et chacune mitige certains risques des deux côtés.
 
+La communication dans une architecture client-serveur repose largement sur le modèle de protocole de requête-réponse. En réalité, ce protocole est une structure imposée sur un service sous-jacent de transmission de messages, conçue pour faciliter la communication entre les composants du système client-serveur. Ces protocoles impliquent généralement un échange bidirectionnel de messages, allant du client vers le serveur, puis du serveur vers le client. Le premier message contient à la fois une description de l'opération à exécuter sur le serveur et un tableau d'octets contenant les arguments correspondants. Le second message contient les résultats de l'opération, également codés sous forme de tableau d'octets \cite{Coulouris_2012}. Ce paradigme est relativement basique et trouve son utilité principalement dans les systèmes embarqués où les performances sont d'une importance cruciale. De plus, cette approche est également employée dans le protocole HTTP.
 
-L'architecture client-serveur, également appelée modèle client-serveur, est une application réseau qui répartit les tâches et les charges de travail entre les clients et les serveurs résidant sur le même système ou liés par un réseau informatique.
-
-L'architecture client-serveur fait référence à un système qui héberge, fournit et gère la plupart des ressources et services demandés par le client. Dans ce modèle, toutes les demandes et tous les services sont fournis sur un réseau, également appelé modèle informatique en réseau ou réseau client-serveur. 
-
-L'architecture client-serveur comprend généralement des postes de travail, des PC ou d'autres appareils de plusieurs utilisateurs, connectés à un serveur central via une connexion Internet ou un autre réseau. Le client envoie une demande de données et le serveur accepte et répond à la demande, renvoyant les paquets de données à l'utilisateur qui en a besoin.
-
-Ce modèle est également appelé réseau client-serveur ou modèle informatique en réseau.
-
-Pour résumer brièvement :
-
-Tout d'abord, le client envoie sa demande via un appareil compatible réseau
-Ensuite, le serveur réseau accepte et traite la demande de l'utilisateur
-Enfin, le serveur délivre la réponse au client
-
-\cite{Terra_2023}
 \subsection{Pair-à-pair}
+
+Dans cette architecture, tous les processus impliqués dans une tâche ou une activité jouent des rôles similaires, interagissant de manière coopérative en tant que pairs, sans aucune distinction entre les processus client et serveur ou les ordinateurs sur lesquels ils s'exécutent. Concrètement, tous les processus participants exécutent le même programme et offrent entre eux le même ensemble d'interfaces. Bien que le modèle client-serveur offre une approche directe et relativement simple du partage de données et d'autres ressources, il est peu évolutif. La centralisation de la fourniture et de la gestion des services qu'implique le placement d'un service à une seule adresse ne va pas bien au-delà de la capacité de l'ordinateur qui héberge le service et de la bande passante de ses connexions réseau.
+
+Un certain nombre de stratégies de placement ont évolué en réponse à ce problème (voir la discussion sur le placement ci-dessous), mais aucune d'entre elles n'aborde le problème fondamental : la nécessité de distribuer les ressources partagées beaucoup plus largement afin de partager les charges informatiques et de communication encourues dans y accéder parmi un nombre beaucoup plus grand d'ordinateurs et de liens réseau. L'idée clé qui a conduit au développement des systèmes peer-to-peer est que les ressources réseau et informatiques détenues par les utilisateurs d'un service pourraient également être utilisées pour prendre en charge ce service. Cela a pour conséquence utile que les ressources disponibles pour exécuter le service augmentent avec le nombre d'utilisateurs. La capacité matérielle et les fonctionnalités du système d'exploitation des ordinateurs de bureau d'aujourd'hui dépassent celles des serveurs d'hier, et la majorité d'entre eux sont équipés de connexions réseau haut débit permanentes. Le but de l'architecture peer-to-peer est d'exploiter les ressources (à la fois données et matériel) d'un grand nombre d'ordinateurs participants pour l'accomplissement d'une tâche ou d'une activité donnée. Des applications et des systèmes peer-to-peer ont été construits avec succès pour permettre à des dizaines, voire des centaines de milliers d'ordinateurs, de fournir un accès aux données et à d'autres ressources qu'ils stockent et gèrent collectivement. L'un des premiers exemples était l'application Napster permettant de partager des fichiers musicaux numériques. Bien que Napster ne soit pas une pure architecture peer-to-peer (et ait également gagné en notoriété pour des raisons autres que son architecture), sa démonstration de faisabilité a abouti au développement du modèle architectural dans de nombreuses directions précieuses. Un exemple plus récent et largement utilisé est le système de partage de fichiers BitTorrent. \cite{toole2006bittorrent}
 
 \subsection{Maître-Ouvrier}
 
 
+% p. 206
 \section{Interopérabilité de système hétérogène}
 
 \subsection{REST}
