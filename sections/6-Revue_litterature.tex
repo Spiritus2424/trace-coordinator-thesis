@@ -89,29 +89,57 @@ Dans l'architecture pair-à-pair, tous les processus impliqués dans une tâche 
 
 \subsection{Maître-Ouvrier}
 
-Master-Slave is a kind of typical parallel calculation system architecture, in which a master node exists. The master node is responsible for the segmentation of the entire task, the distribution of the various sub-tasks after segmentation to each slave node for calculation and the summarization of all slave nodes calculation results to get the final calculation result. The system architecture drawing is shown in figure X.
+L'architecture Maître-Ouvrier est une sorte d'architecture de système de calcul parallèle typique, dans laquelle existe un noeud maître. Le noeud maître est responsable de la segmentation de l'ensemble de la tâche, de la distribution des différentes sous-tâches après segmentation à chaque noeud ouvrier pour le calcul et de la synthèse de tous les résultats de calcul des noeuds ouvrier pour obtenir le résultat final du calcul. Le dessin de l'architecture du système est présenté à la figure X. \cite{LU2020106497}
 
-In such architecture, each slave node shall proceed with the main calculation work, while the master node shall only proceed with a little. The master node shall mainly responsible for the input data before calculation, the output of the final results after calculation, and the segmentation and distribution of sub-tasks during calculation process and so on. Therefore, using such architecture, it shall be easier for the management and control of the calculation nodes, such as load balancing and so on. When Master-Slave node arrangement is adopted, each node shall be required to complete the dealing of control logic and control calculation.
+Dans une telle architecture, chaque noeud ouvrier doit procéder au travail de calcul intense, tandis que le noeud maître s'occupe de coordonner les résultats finaux. Le noeud maître sera principalement responsable des données d'entrée avant le calcul, de la sortie des résultats finaux après le calcul, ainsi que de la segmentation et de la distribution des sous-tâches pendant le processus de calcul. Par conséquent, en utilisant une telle architecture, il sera plus facile de gérer et de contrôler les noeuds de calcul, tels que l'équilibrage de charge. Lorsque la disposition des noeuds maître-ouvrier est adoptée, chaque noeud doit effectuer sa tâche et le calcul associé.
 
-
-For the slave node, each node may be at different status at different time during the calculation process, as shown in Figure X, the following status are included:
+Pour le noeud ouvrier, chaque noeud peut être dans un état différent à différents moments du processus de calcul \cite{Liu_2010}, comme le montre la figure X, les états suivants sont inclus :
 \begin{itemize}
-    \item UNKNOWN status—means that the node status is unknown, generally before the system initialization;
-    \item FREE status—means that the node is idle, and available to receive calculation tasks to calculate;
-    \item BUSY status—means that the node has started to calculate;
-    \item BUSY\_TO\_FREE status—means that the node has finished the calculation and is waiting for the data returned. If the data has returned to the master node, the status shall change to FREE status;
-    \item DEAD status—means that the node is not available, probably because of a network failure leading to induction-free by the master node.
+    \item INCONNU signifie que l'état du noeud est inconnu, généralement avant l'initialisation du système;
+    \item LIBRE signifie que le noeud est inactif et disponible pour recevoir des tâches de calcul afin de calculer;
+    \item OCCUPÉ signifie que le noeud a commencé à calculer;
+    \item OCCUPÉ\_À\_LIBRE signifie que le noeud a terminé le calcul et attend les données renvoyées. Si les données sont retournées au noeud maître, le statut passera au statut LIBRE;
+    \item MORT signifie que le noeud n'est pas disponible, probablement en raison d'une panne de réseau entraînant une absence de réponse du noeud.
 \end{itemize}
-
-\cite{castillo2011soap}
-\cite{Liu_2010}
 
 % p. 206
 \section{Interopérabilité de système hétérogène}
 
+L'interopérabilité se réfère à la capacité d'un système à partager des données avec un autre système, même s'ils n'utilisent pas le même langage de programmation. Pour ce faire, les systèmes peuvent interagir de deux manières : soit de manière indirecte en utilisant un référentiel commun, soit directement via un protocole de communication réseau. Dans le premier cas, les systèmes se coordonnent en utilisant des éléments tels qu'une base de données, un système de fichiers distribués ou une zone de mémoire partagée. Dans le second cas, les systèmes communiquent en utilisant des protocoles tels que TCP, UDP ou HTTP et échangent des données dans un format compréhensible mutuellement. Cette section se concentre exclusivement sur les méthodes d'interaction directe entre les systèmes.
+
 \subsection{REST}
 
+Le standard REST est un ensemble de règles et de conventions permettant de créer et d'interagir avec des services Web ou des applications Web. REST est un style architectural pour la conception d'applications en réseau qui se repose sur le protocole de communication HTTP.
+
+Le standard REST sont largement utilisées pour créer des serveurs Web en raison de leur simplicité, de leur évolutivité et de leur facilité d'intégration. Ils sont devenus un standard pour les applications Web et sont utilisés dans une large gamme de services, des plateformes de médias sociaux aux sites Web de commerce électronique et aux applications mobiles. Voici quelques principes et concepts clés associés au standard REST: ressources, méthodes HTTP, communication sans état, interface uniforme, représentation.
+
+Ressources: Les données et les fonctionnalités sont exposées en tant que ressources. Ces ressources sont identifiées par des URL, et chaque ressource possède une URL unique. Par exemple, un API REST pour une librairie peut avoir des ressources telles que "/livres", "/auteurs" et "/commandes".
+
+Méthodes HTTP: Les méthodes HTTP permet d'effectuer des opérations sur les ressources. Les méthodes HTTP les plus couramment utilisées dans REST sont :
+\begin{itemize}
+    \item GET Utilisé pour récupérer des données d'une ressource;
+    \item POST Utilisé pour créer une nouvelle ressource
+    \item PUT Utilisé pour mettre à jour une ressource existante ou la créer si elle n'existe pas;
+    \item DELETE Utilisé pour supprimer une ressource;
+    \item PATCH Utilisé pour effectuer des mises à jour partielles d'une ressource.
+\end{itemize}
+
+
+Communication sans état: Une communication sans état signifie que chaque requête doit contenir toutes les informations nécessaires pour comprendre et traiter la requête. Le serveur ne stocke aucune information client entre les requêtes. Cette simplicité et cette apatride rendent les API REST évolutives et faciles à mettre en cache.
+
+Interface Uniforme: Une interface uniforme inclut l'utilisation de code d'état HTTP pour les réponses (par exemple, 200 pour succès, 404 pour non trouvé, 500 pour les erreurs du serveur) et l'appellation des URIs doit être claire et cohérente des ressources.
+
+Représentation: Les données sont transférées sous forme de représentations, qui peuvent être dans différents formats, tels que JSON, XML, HTML ou autres. Les clients peuvent demander le format de représentation qu'ils préfèrent en définissant les en-têtes HTTP appropriés.
+
+\cite{Piao2018}
+
+\cite{fielding2000architectural}
+
+\cite{Johnson2022}
+
 \subsection{GraphQL}
+
+\cite{Vadlamani2021}
 
 \subsection{JSON-RPC}
 

@@ -599,3 +599,60 @@
   doi       = {10.1109/iCECE.2010.755}
 }
 
+
+@article{LU2020106497,
+  title    = {Parallel and distributed architecture of genetic algorithm on Apache Hadoop and Spark},
+  journal  = {Applied Soft Computing},
+  volume   = {95},
+  pages    = {106497},
+  year     = {2020},
+  issn     = {1568-4946},
+  doi      = {https://doi.org/10.1016/j.asoc.2020.106497},
+  url      = {https://www.sciencedirect.com/science/article/pii/S1568494620304361},
+  author   = {Hao-Chun Lu and F.J. Hwang and Yao-Huei Huang},
+  keywords = {Genetic algorithm, Parallel and distributed computing, Traveling salesman problems, Apache Hadoop, Apache Spark},
+  abstract = {The genetic algorithm (GA), one of the best-known metaheuristic algorithms, has been extensively utilized in various fields of management science, operational research, and industrial engineering. The efficiency of GAs in solving large-scale optimization problems would be enhanced if the iterative processes required by the genetic operators can be implemented in a parallel and distributed computing architecture. Apache Hadoop has recently been one of the most popular systems for distributed storage and parallel processing of big data. By integrating the GA highly into Apache Hadoop, this study proposes an advanced GA parallel and distributed computing architecture that achieves the effectiveness and efficiency of GA evolution. Characterized by the sophisticated mechanism of dispatching the GA core operators into Apache Hadoop, the developed computing framework fits well with the cloud computing model. The presented GA parallelization architecture outperforms the state-of-the-art reference architectures according to the computational experiments where the testing instances of traveling salesman problems are employed. Our numerical experiments also demonstrate that the proposed architecture can readily be extended to Apache Spark.}
+}
+
+@inproceedings{Vadlamani2021,
+  author    = {Vadlamani, Sri Lakshmi and Emdon, Benjamin and Arts, Joshua and Baysal, Olga},
+  booktitle = {2021 IEEE/ACM 8th International Workshop on Software Engineering Research and Industrial Practice (SER\&IP)},
+  title     = {Can GraphQL Replace REST? A Study of Their Efficiency and Viability},
+  year      = {2021},
+  volume    = {},
+  number    = {},
+  pages     = {10-17},
+  doi       = {10.1109/SER-IP52554.2021.00009}
+}
+
+@mastersthesis{Piao2018,
+  month    = {August},
+  title    = {Nouvelle architecture pour les environnements de d{\'e}veloppement int{\'e}gr{\'e} et tra{\c c}age de logiciel},
+  school   = {{\'E}cole Polytechnique de Montr{\'e}al},
+  author   = {Yonni Chen Kuang Piao},
+  year     = {2018},
+  url      = {https://publications.polymtl.ca/3282/},
+  abstract = {R{\'E}SUM{\'E}: La conception et le d{\'e}veloppement de logiciels requi{\`e}rent souvent l'utilisation d'un Environnement de D{\'e}veloppement Int{\'e}gr{\'e} (EDI) pour assister et faciliter le travail des d{\'e}veloppeurs. Les EDI offrent, {\`a} travers une interface graphique, des outils pour l'{\'e}dition, la compilation et le d{\'e}bogage du code. Cependant, lorsque ces outils ne sont pas adapt{\'e}s et suffisants pour la d{\'e}tection de d{\'e}fauts de performance sur des logiciels complexes, comme les syst{\`e}mes distribu{\'e}s, les d{\'e}veloppeurs se tournent vers des techniques de tra{\c c}age. Des logiciels appel{\'e}s traceurs r{\'e}coltent des informations pr{\'e}cises pendant l'ex{\'e}cution du syst{\`e}me instrument{\'e}, et les regroupent dans une trace. Une trace peut contenir une quantit{\'e} importante de donn{\'e}es. Des outils sp{\'e}cialis{\'e}s ont {\'e}t{\'e} d{\'e}velopp{\'e}s afin d'en automatiser le processus d'analyse et de visualisation. Au fur et {\`a} mesure qu'un logiciel grandit et se complexifie, l'utilisation de ces outils d'analyse et de visualisation devient tout aussi importante qu'un d{\'e}bogueur. N{\'e}anmoins, ces outils sont complexes, autonomes et difficilement r{\'e}utilisables dans d'autres syst{\`e}mes. De plus, ils ne supportent pas les m{\^e}mes analyses, les m{\^e}mes formats de trace, ni les m{\^e}mes cas d'utilisation, ce qui implique que le d{\'e}veloppeur ait besoin d'installer plusieurs outils pour arriver {\`a} ses fins. Dans le cadre de ce projet, nous cherchons donc {\`a} r{\'e}soudre ces probl{\`e}mes et {\`a} int{\'e}grer l'analyse et la visualisation de trace non seulement dans les EDI, mais dans tout autre syst{\`e}me qui pourrait en b{\'e}n{\'e}ficier, tels que les serveurs d'int{\'e}gration continue ou encore les syst{\`e}mes de monitorage. Par cons{\'e}quent, nous proposons une nouvelle architecture logicielle flexible bas{\'e}e sur une approche client-serveur, d'architecture orient{\'e}e service et multicouche. Notre travail s'{\'e}tend {\`a} l'impl{\'e}mentation de l'architecture du serveur au sein du projet Trace Compass et l'impl{\'e}mentation de l'architecture du client au sein d'un nouveau projet appel{\'e} TraceScape. Toutes nos contributions sont disponibles {\`a} code source ouvert. Des tests de performance ont {\'e}t{\'e} men{\'e}s afin d'{\'e}valuer le surco{\^u}t associ{\'e} {\`a} la nouvelle architecture par rapport {\`a} la pr{\'e}c{\'e}dente approche, et les r{\'e}sultats indiquent un surco{\^u}t acceptable.  ABSTRACT: Creating software often requires using an Integrated Development Environment (IDE) to help and facilitate the development work. With a simplified user interface, IDEs provide many useful tools such as a code editor, a compiler, and a debugger. Nonetheless, when those tools are not enough to detect performance defects in a large, complex and multithreaded system, developers use tracing techniques. A program called tracer collects accurate information during the execution of an instrumented system. A trace could contain a lot of data, and specialized tools have been developed to analyze traces automatically and show the results in interactive views. As the software grows and becomes more complex, using trace visualization tools must be part of the developer tool environment, like the debugger in the software development process. However, trace visualization tools are sophisticated, standalone and hardly reusable in other systems such as an IDE. Moreover, they have their specific trace format support, specific use cases, and specific trace analyses. Most of the time, developers need to install and use several such tools to fulfill their needs. In this research project, we aim to solve those problems and integrate trace analysis and visualization in tools such as IDEs, monitoring systems or continuous integration systems. Thus, we propose a flexible software architecture based on client-server, service-oriented architecture and layered approaches. We implemented the server architecture in the Trace Compass project and the client architecture in a new project called TraceScape. All of our contributions are available online in open source repositories. We also evaluated our proposed architecture through benchmarks, and the results show that our approach has an acceptable overhead compared to the standalone approach.}
+}
+
+@book{fielding2000architectural,
+  title     = {Architectural styles and the design of network-based software architectures},
+  author    = {Fielding, Roy Thomas},
+  year      = {2000},
+  publisher = {University of California, Irvine}
+}
+
+
+@misc{Johnson2022,
+  title   = {What is rest},
+  url     = {https://restfulapi.net/},
+  journal = {REST API Tutorial},
+  author  = {Johnson, Brad Andrew and Gupta, Lokesh and Ravan and Admin and Jay and Person and Young, Dave and Packer, Jason and Choudhary, Chandrajeet and Luis and et al.},
+  year    = {2022},
+  month   = {Apr}
+}
+
+@misc{RESTChap5,
+  url     = {https://ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm},
+  journal = {Fielding Dissertation: CHAPTER 5: Representational State Transfer (REST)}
+} 
