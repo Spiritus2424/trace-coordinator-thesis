@@ -85,7 +85,20 @@
 \usepackage{siunitx} % unites SI / SI units
 \usepackage{amssymb} % autres symboles mathematiques / other mathematical symbols
 \usepackage[bottom]{footmisc} % pour avoir les notes de bas de page en dessous des figures... / to have the footnotes below the figures
-%\usepackage{listings} % Si on veut ajouter des lignes de codes dans le texte / If you want to add lines of code to the text
+\usepackage{xcolor}
+\usepackage{listings} % Si on veut ajouter des lignes de codes dans le texte / If you want to add lines of code to the text
+
+\lstset
+{
+	basicstyle=\ttfamily, % Font style for the code
+	numbers=left, % Line numbers on the left
+	numberstyle=\tiny\color{gray}, % Line number style
+	frame=single, % A frame around the code
+	breaklines=true, % Automatic line breaking
+	postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space}, % Line continuation symbol
+	showstringspaces=false, % Don't show spaces in strings
+}
+
 
 
 %%
@@ -155,19 +168,19 @@
 \ifthenelse{\equal{\PageGarde}{O}}{\addtocounter{page}{1}}{}
 \thispagestyle{empty}%
 \begin{center}%
-\vspace*{\stretch{0.1}}
-\textbf{POLYTECHNIQUE MONTRÉAL}\\
-affiliée à l'Université de Montréal\\
-\vspace*{\stretch{1}}
-\textbf{\monTitre}\\
-\vspace*{\stretch{1}}
-\textbf{\MakeUppercase{\monPrenom~\monNom}}\\
-Département de~{\monDepartement}\\
-\vspace*{\stretch{1}}
-\ifthenelse{\equal{\monDiplome}{M}}{Mémoire présenté}{Thèse présentée} en vue de l'obtention du diplôme de~\emph{\monDipl}\\
-\maDiscipline\\
-\vskip 0.4in
-\moisDepot~\anneeDepot
+	\vspace*{\stretch{0.1}}
+	\textbf{POLYTECHNIQUE MONTRÉAL}\\
+	affiliée à l'Université de Montréal\\
+	\vspace*{\stretch{1}}
+	\textbf{\monTitre}\\
+	\vspace*{\stretch{1}}
+	\textbf{\MakeUppercase{\monPrenom~\monNom}}\\
+	Département de~{\monDepartement}\\
+	\vspace*{\stretch{1}}
+	\ifthenelse{\equal{\monDiplome}{M}}{Mémoire présenté}{Thèse présentée} en vue de l'obtention du diplôme de~\emph{\monDipl}\\
+	\maDiscipline\\
+	\vskip 0.4in
+	\moisDepot~\anneeDepot
 \end{center}%
 \vspace*{\stretch{1}}
 \copyright~\monPrenom~\monNom, \anneeDepot.
@@ -177,18 +190,18 @@ Département de~{\monDepartement}\\
 \newpage\thispagestyle{empty}%
 \begin{center}%
 
-\vspace*{\stretch{0.1}}
-\textbf{POLYTECHNIQUE MONTRÉAL}\\
-affiliée à l'Université de Montréal\\
-\vspace*{\stretch{2}}
-Ce\ifthenelse{\equal{\monDiplome}{M}}{~mémoire intitulé}{tte thèse intitulée} :\\
-\vspace*{\stretch{1}}
-\textbf{\monTitre}\\
-\vspace*{\stretch{1}}
-présenté\ifthenelse{\equal{\monDiplome}{M}}{}{e}
-par~\textbf{\mbox{\monPrenom~\MakeUppercase{\monNom}}}\\
-en vue de l'obtention du diplôme de~\emph{\mbox{\monDipl}}\\
-a été dûment accepté\ifthenelse{\equal{\monDiplome}{M}}{}{e} par le jury d'examen constitué de :\end{center}
+	\vspace*{\stretch{0.1}}
+	\textbf{POLYTECHNIQUE MONTRÉAL}\\
+	affiliée à l'Université de Montréal\\
+	\vspace*{\stretch{2}}
+	Ce\ifthenelse{\equal{\monDiplome}{M}}{~mémoire intitulé}{tte thèse intitulée} :\\
+	\vspace*{\stretch{1}}
+	\textbf{\monTitre}\\
+	\vspace*{\stretch{1}}
+	présenté\ifthenelse{\equal{\monDiplome}{M}}{}{e}
+	par~\textbf{\mbox{\monPrenom~\MakeUppercase{\monNom}}}\\
+	en vue de l'obtention du diplôme de~\emph{\mbox{\monDipl}}\\
+	a été dûment accepté\ifthenelse{\equal{\monDiplome}{M}}{}{e} par le jury d'examen constitué de :\end{center}
 \vspace*{\stretch{2}}
 \monJury
 %%
@@ -199,34 +212,34 @@ a été dûment accepté\ifthenelse{\equal{\monDiplome}{M}}{}{e} par le jury d'e
 \include{sections/3-Abstract}          % Résumé du sujet en anglais / Abstract in English
 
 {\setlength{\parskip}{0pt}
-%%
-%% Table des matières 
-%% Table of contents
-\ifthenelse{\equal{\Langue}{english}}{
-	\renewcommand\contentsname{TABLE OF CONTENTS}
-}{
-	\renewcommand\contentsname{TABLE DES MATIÈRES}
-}
-\tableofcontents
-%%
-%% Liste des tableaux
-%% List of tables
-\ifthenelse{\equal{\Langue}{english}}{
-	\renewcommand\listtablename{LIST OF TABLES}
-}{
-	\renewcommand\listtablename{LISTE DES TABLEAUX}
-}\listoftables
-%%
-%% Liste des figures
-%% List of figures
-\ifthenelse{\equal{\Langue}{english}}{
-	\renewcommand\listfigurename{LIST OF FIGURES}
-}{
-	\renewcommand\listfigurename{LISTE DES FIGURES}
-}\listoffigures
-%%
-%% Liste des annexes au besoin.
-%% List of appendices, if needed.
+	%%
+	%% Table des matières 
+	%% Table of contents
+	\ifthenelse{\equal{\Langue}{english}}{
+		\renewcommand\contentsname{TABLE OF CONTENTS}
+	}{
+		\renewcommand\contentsname{TABLE DES MATIÈRES}
+	}
+	\tableofcontents
+	%%
+	%% Liste des tableaux
+	%% List of tables
+	\ifthenelse{\equal{\Langue}{english}}{
+		\renewcommand\listtablename{LIST OF TABLES}
+	}{
+		\renewcommand\listtablename{LISTE DES TABLEAUX}
+	}\listoftables
+	%%
+	%% Liste des figures
+	%% List of figures
+	\ifthenelse{\equal{\Langue}{english}}{
+		\renewcommand\listfigurename{LIST OF FIGURES}
+	}{
+		\renewcommand\listfigurename{LISTE DES FIGURES}
+	}\listoffigures
+	%%
+	%% Liste des annexes au besoin.
+	%% List of appendices, if needed.
 }
 
 \include{sections/4-Sigles_Abrev}       % Liste des sigles et abréviations.

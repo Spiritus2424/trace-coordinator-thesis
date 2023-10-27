@@ -39,12 +39,6 @@ Vampir fournit un cadre facile à utiliser qui permet aux développeurs d'affich
 
 \section{Traçage distribué}
 
-Les efforts récents pour paralléliser l'analyse des traces, comme en témoignent les travaux de Reumont-Locke (2015) \cite{reumont2015methodes} et Martin (2018) \cite{Martin2018}, ont visé à améliorer l'efficacité de ce processus. Néanmoins, l'optimisation de l'efficacité ne peut à elle seule répondre pleinement aux défis d'évolutivité inhérents aux environnements distribués. Même si un outil d'analyse de trace fonctionne avec une efficacité maximale, il reste limité par les capacités de calcul du matériel sous-jacent, généralement équivalentes au système tracé dans le meilleur des cas. Lorsque nous augmentons le nombre de nœuds tracés jusqu'à des centaines ou des milliers, l'outil d'analyse devient rapidement submergé. Ce goulot d'étranglement devient particulièrement problématique dans les applications nécessitant une disponibilité continue, car les anomalies peuvent rapidement s'aggraver au sein des clusters (Matloff) \cite{matloff2011programming}, et les retards dans l'analyse des données pendant les enquêtes ne font qu'exacerber la situation.
-
-Une approche similaire observée dans les plateformes de traçage distribuées implique le déploiement de plusieurs traceurs, chacun fonctionnant sur une machine tracée, toutes les données de trace étant transmises à un collecteur central pour une analyse ultérieure. Dans certains cas, ces traceurs prennent la forme de bibliothèques client, permettant la création d'événements personnalisés avec des informations spécifiques à l'application, contrairement à l'approche de traçage plus opaque en boîte noire d'outils comme Nagios. Prometheus répond aux problèmes d'évolutivité en permettant l'organisation des instances Prometheus dans une fédération, comme l'a démontré Reback en 2021 \cite{Logz.io_prometheus_2023}. Cette approche facilite l'établissement d'une hiérarchie à plusieurs niveaux de serveurs Prometheus, chaque niveau regroupant et transmettant les données au niveau supérieur. Notamment, Nagios a également adopté une approche similaire pour atténuer ses propres défis d'évolutivité \cite{Nagios2019}.
-
-Bien que la mise à l'échelle horizontale des serveurs d'analyse soit une stratégie efficace, il est essentiel de reconnaître que les analyses Prometheus consistent principalement en des métriques simples, ce qui rend l'agrégation possible. Cependant, appliquer le même modèle à des processus d'analyse plus complexes, tels que ceux proposés par Trace Compass, présente des défis considérables. La nature de leurs agrégations varie considérablement selon les différents types d'analyse, ce qui rend difficile l'application directe de l'approche Prometheus dans de tels cas.
-
 \subsection{Système distribué}
 
 Les services Internet modernes sont souvent mis en oeuvre sous la forme de systèmes distribués complexes à grande échelle. Ces applications sont construites à partir d'ensembles de modules logiciels qui peuvent être développés par différentes équipes, peut-être dans différents langages de programmation, et peuvent s'étendre sur plusieurs milliers de machines réparties dans plusieurs installations physiques. Les outils qui aident à comprendre le comportement du système et à raisonner sur les problèmes de performances sont inestimables dans un tel environnement.
@@ -133,15 +127,90 @@ Représentation: Les données sont transférées sous forme de représentations,
 
 \subsection{GraphQL}
 
-\cite{Vadlamani2021}
-\cite{Brito2019}
-\cite{Hartina2018}
-\cite{Lee2020}
-\cite{Sayago2020}
-\cite{guo2018design}
-\subsection{JSON-RPC}
+Fondamentalement, GraphQL offre aux clients la possibilité d'interroger une base de données en utilisant un schéma comme représentation. Cette approche marque une différence majeure par rapport aux standards REST. Dans REST, les serveurs exposent une liste de point d'accès que les clients peuvent appeler, tandis que les serveurs GraphQL mettent à disposition une base de données que les clients peuvent interroger avec un seul point d'accès. Une base de données GraphQL est définie par un schéma, qui peut être considéré comme un réseau de relations \cite{hartig2017initial}. Dans ce réseau, les noeuds représentent des objets qui définissent un type et comprennent une liste de champs. Chaque champ a un nom et un type associé. Des liens se forment lorsque les objets définissent des champs dont les types sont d'autres objets. GraphQL propose un langage de définition de schéma (DSL) simple. Pour illustrer son utilisation, prenons l'exemple d'un système de blog simple comprenant deux types d'objets : Publication et Auteur. Comme illustré dans l'exemple (Listing X), les types d'objets sont définis à l'aide du mot-clé "type". Dans ce cas, le type Publication comporte quatre champs : id, auteur, titre, et texte. Le premier champ est une chaîne non nullable (indiqué par le "!" après le type), le deuxième champ fait référence à un autre type d'objet du schéma, appelé "Auteur". Les deux champs restants dans Publication ont un type "String". Enfin, les schémas incluent généralement un type pré-défini appelé "Query", qui sert de point d'entrée aux API GraphQL. Un objet de type Query expose les types d'objets qui peuvent être interrogés par les clients, ainsi que les arguments nécessaires pour effectuer ces requêtes. Par exemple, la requête "publier" accepte une chaîne non nullable comme argument et renvoie l'objet de type Publication ayant cette chaîne comme identifiant. \cite{Brito2019}
 
-\subsection{gRPC}
+\begin{lstlisting}
+type Publication {
+    id: String!
+    auteur: Auteur
+    titre: String
+    texte: String
+}
+type Auteur {
+    id: String!
+    nom: String
+    courriel: String
+}
+type Query {
+    publier(id: String!): Publication
+}
+\end{lstlisting}
+
+GraphQL définit également un langage de requête utilisé par les clients. Dans l'exemple ci-dessous (Listing X), nous présentons trois types de requêtes dans ce langage. La première requête, nommée "PublierParTitre", permet au client de demander l'objet "Publication" avec l'identifiant 1000, en spécifiant qu'il souhaite uniquement récupérer le champ "Titre" de cet objet. La deuxième requête, intitulée "PublierParTitreEtTexte", suit une logique similaire, mais cette fois-ci, le client demande les champs "titre" et "texte" de l'objet "Publication". Enfin, la troisième requête, appelée "PublierParTitreEtAuteur", cherche à obtenir à la fois le titre et l'auteur de la même "Publication". Cependant, étant donné que l'auteur est un autre objet, il est nécessaire de préciser les champs de l'auteur que le client souhaite interroger, en l'occurrence, uniquement le nom.
+
+\begin{lstlisting}
+query PublierParTitre{
+    publier(id:"1000"){
+        titre
+    }
+}
+query PublierParTitreEtTexte{
+    publier(id:"1000"){
+        titre
+        texte
+    }
+}
+query PublierParTitreEtAuteur{
+    publier(id:"1000"){
+        titre
+        auteur {
+            nom
+        }
+    }
+}
+\end{lstlisting}
+
+Les résultats de cette dernière requête sont illustrés dans le Listing X. Comme vous pouvez le constater, le résultat est un objet au format JSON, qui doit être analysé et éventuellement désérialisé par les clients qui ont demandé les champs "titre" et "corps". En résumé, GraphQL permet aux clients de définir précisément les données qu'ils souhaitent obtenir, ce qui réduit le gaspillage de bande passante et simplifie le processus de récupération des informations nécessaires.
+
+\break
+\begin{lstlisting}
+{ 
+    "data": {
+        "publication":{
+            "titre": "..."
+            "auteur":{
+                "nom": "..."
+            }
+        }
+    }
+}
+\end{lstlisting}
+
+Nous pouvons constater que GraphQL résout 2 problèmes qui sont sur-télécharger et sous-télécharger. Sur-télécharger est quand le client fait une requête et reçoit une réponse du serveur contenant des informations superflues, ce qui force le client à implémenter la logique de son côté pour les filtrer. La conséquence est qu'une grosse quantité de données inutiles est transmise, gaspillant la bande passante et potentiellement augmentant le temps de transmission, d'encodate et de décodage. Sous-télécharger est le phénomène inverse, quand le point d'accès au service ne fournit pas suffisamment d'information et donc force le client à faire plusieurs requêtes pour récolter les ressources rechercher. Le problème de sous-télécharger peut être réglé facilement en suivant plusieurs points d'accès en une seule requête. Régler le problème de sur-télécharger, en revanche, demande des techniques plus sophistiquées, car le besoin de filtrage peut facilement changer d'une application à l'autre. \cite{Vadlamani2021}
+
+
+
+GraphQL est relativement nouveau par rapport à REST. Brito et al \cite{Brito2019} ont examiné un article de blog (littérature grise) pour comprendre les avantages et les caractéristiques clés de GraphQL, tels que perçus par les praticiens. Ils concluent que GraphQL est plus efficace en termes de réduction de 99\% de la taille des documents JSON (en termes de nombre d'octets). Hartig et Perez \cite{hartig2017initial}, \cite{hartig2018semantics} fournissent la sémantique d'une requête formelle et analysent ensuite le langage. Leurs résultats montrent que GraphQL est un langage relativement moins complexe. Wittern et coll. \cite{wittern2018generating} a évalué la faisabilité de encapsuler automatiquement GraphQL pour les API REST (de type) existantes avec la spécification Open API (OAS) et sur cette base, ils ont étudié les gains obtenus entre GraphQL et REST. En outre, ils discutent des défis liés à la création de tels encapsuleur, tels que l'assainissement des données, l'authentification ou le traitement des requêtes imbriquées.
+
+En ce qui est question des outils de traçage très peu intéragisse avec une base de donnée, mais plutôt au fichier de trace directement. Il reste que certain emmagasine les données traces dans un certain format et l'expose avec une base de donnée. Un exemple concret serait PromQL. PromQL est le langage de requête exposé par le serveur Prometheus pour l'accès aux traces sauvegardées. La base de données de Prometheus est organisée sous forme de séries temporelles. Par conséquent, une requête trivial consiste à extraire le point de données enregistré pour chaque instant dans le temps. Ensuite, pour filtrer la réponse, il est possible de spécifier les étiquettes (mots-clés) nécessaires. Ainsi, seuls les points de données dotés de ces étiquettes seront renvoyés. De plus, Prometheus prend en charge divers opérateurs d'agrégation. Par exemple, si l'on souhaite calculer la somme des points de données renvoyés, cela peut être réalisé grâce à ces opérateurs d'agrégation.
+
+\subsection{Remote Procedure Call}
+
+Les Remote Procedure Call (RPC) permettent à une machine A d'appeler des procédures sur une machine distante B, comme si elles étaient disponibles dans l'espace d'adressage local \cite{Coulouris_2012}.
+
+JSON-RPC est un protocole RPC sans état, qui utilise le format JSON comme format d'échange et est conçu pour être simple \cite{JsonRpcSpec}. Une requête du client contient les champs suivant:
+\begin{itemize}
+    \item jsonrpc: Permet de spéciﬁer la version du protocole;
+    \item method: Contient le nom de la méthode à exécuter;
+    \item params: Permet de lister les valeurs des paramètres de la méthode;
+    \item id: Permet d'associer une réponse du serveur à la requête du client.
+\end{itemize}
+Une requête doit toujours recevoir une réponse. Le protocole supporte également les notiﬁcations, un message qui n'a pas besoin d'avoir de réponse. Finalement, JSON-RPC ne spéciﬁe pas la couche de transport par laquelle les messages sont acheminés.
+
+gRPC (Google RPC) est une infrastructure multiplateforme, indépendante du langage et de la plate-forme, à usage général, utilisée par Google Inc. et rendue publique en 2015. Elle peut générer automatiquement des stubs client et serveur idiomatiques pour un service dans une variété de langues et plates-formes. Il utilise des tampons de protocole qui constituent un mécanisme flexible, efficace et automatisé pour la sérialisation binaire des données structurées. L'utilisateur déﬁnit des services dans un ﬁchier .proto et le compilateur protoc génère les API qui seront utilisés par le client et le serveur.
+
+gRPC offre une meilleure performance que le protocole JSON-RPC. \cite{kiraly2018analysing} Cette différence de performance est causé par le format de transmission. JSON-RPC utilise un format textuel (JSON) pour la transmission et gRPC utilise un format binaire (Protobuffers). Le format binaire résout à un encodage plus petit et accélère la phase de décodage puisque qu'il n'a aucune conversion nécessaire. Le temps de transmission réseau se voit également réduit. Cela donne un avantage à gRPC lorsque la performance est un critère important.
+
 
 \subsection{Language Server Protocol}
 
@@ -193,7 +262,8 @@ Dans le protocole TSP, il est possible d'ajuster la résolution des données, ai
 
 \section{Conclusion de la revue littéraire}
 
-% A travers cette revue de littérature, nous avons vu que la modularisation de Trace Compass a créé la fondation pour pouvoir le déployer dans un environnement distribué et qu'il existe plusieurs travaux autour du sujet du traçage distribué qui se concentrent sur différentes parties. Nous avons aussi vu que le flux de travail instrumentation-collection-analyse-visualisation/alerte est aussi commun en dehors du domaine du traçage. Toutes ces applications proposent aussi des modèles robustes avec la mise à l'échelle en tête. Pourtant, les opérateurs d'agrégation dans ces outils, s'il y a lieu, sont souvent prédéfinis et fortement couplés avec le format de trace et l'écosystème, malgré qu'ils possèdent un langage de requête puissant. Cela gêne l'adaptation lors des cas d'usage spécifiques et force les utilisateurs à réinventer la logique.
+À travers cette revue de littérature, nous avons vu qu'il a eu beaucoup travail effectuer pour pallier au problème de récolter, d'analyser et de visualiser des traces. Toutes ces applications proposent des modèles bien précis à leur besoin avec la mise à l'échelle en tête. Cela permet d'identifier ce qui semble marcher ou ce qu'il faudrait améliorer. Une lacune évidente des outils de traçage est dû au manque de standardisation ce qui rend le flux de travail instrumentation-collection-analyse-visualisation difficile. Par chance, le protocole TSP offre une fondation pour pouvoir offrir un standard robuste pour favoriser la réutilisation des serveurs d'analyse pour les différents outils de visualisation. Cependant, le protocole n'avait pas la mise à l'échelle en tête.
 
-% En conséquence, nous souhaitons d'abord proposer une organisation qui permet un fonctionnement efficace sur des grappes de calcul pour Trace Compass, en s'inspirant de l'architecture des outils de trace distribués à l'état de l'art. Avec cette nouvelle architecture, nous proposons ensuite une extension du protocole actuel permettant de construire un modèle de programmation qui facilite le développement de nouveaux types d'agrégation dans la visualisation de trace.
+En conséquence, nous souhaitons d'abord d'évaluer les limites du protocole TSP sur des grappes de calcul. Nous souhaitons ensuite proposer une extension aux protocoles pour permettre aux serveurs d'implémenter des analyses plus complexe comme le chemin critique.
+
 
